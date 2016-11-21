@@ -1,29 +1,20 @@
 {
-  "name": "es6-webpack-boilerplate",
+  "name": "snake-game",
   "version": "0.0.1",
-  "description": "Boilerplate for es6 and webpack",
+  "description": "Snake game",
   "main": "index.js",
   "scripts": {
     "start": "script/build",
     "serve": "script/watch",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/airamrguez/es6-webpack-boilerplate"
-  },
   "keywords": [
     "babel",
     "es6",
-    "webpack",
-    "boilerplate"
+    "webpack"
   ],
-  "author": "Airam Rguez",
+  "author": "matikrk",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/airamrguez/es6-webpack-boilerplate/issues"
-  },
-  "homepage": "https://github.com/airamrguez/es6-webpack-boilerplate",
   "devDependencies": {
     "babel-core": "^4.4.3",
     "babel-jest": "^4.0.0",
