@@ -7,7 +7,22 @@
 </head>
 
 <body>
-    <h1 id="title">Example</h1>
+    <h1 id="title">Snake game: </h1>
+<div>
+    <button onclick="game.start()">Start</button>
+    <button onclick="game.stop()">Stop</button>
+    <button onclick="game.reset()">Reset</button>
+</div>
+    <svg width="400" height="400" id="svg-board"
+         style="border:1px solid;"
+    >
+        <rect width="1" height="1" x="200" y="200" id="snake-head" class="snake snake-head"
+              style="fill:rgb(0,0,255);stroke-width:2;stroke:rgb(255,0,0)"
+        ></rect>
+            Sorry, your browser does not support inline SVG.
+    </svg>
+
+
   <script src="../dist/bundle.js"></script>
 </body>
 

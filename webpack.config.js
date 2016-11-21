@@ -37,7 +37,6 @@ module.exports = {
         'regexp': true,
         'undef': true,
         'unused': true,
-        'strict': true,
         'trailing': true,
         'smarttabs': false,
         'globals': {},
