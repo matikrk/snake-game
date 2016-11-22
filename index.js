@@ -26,8 +26,8 @@ const intervalHelper = function (fnc, time) {
 };
 
 const rotate = {
-    left: intervalHelper(main.rotateLeft, timeBase/2),
-    right: intervalHelper(main.rotateRight, timeBase/2),
+    left: intervalHelper(main.rotateLeft, timeBase / 2),
+    right: intervalHelper(main.rotateRight, timeBase / 2),
 };
 
 

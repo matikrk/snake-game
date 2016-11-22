@@ -2,32 +2,29 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <title>ES6 & Webpack Boilerplate</title>
+    <meta charset="utf-8"/>
+    <title>ES6 & Webpack Boilerplate</title>
 </head>
 
 <body>
-    <h1 id="title">Snake game: </h1>
+<h1 id="title">Snake game: </h1>
 <div>
     <button onclick="game.start()">Start</button>
     <button onclick="game.stop()">Stop</button>
     <button onclick="game.reset()">Reset</button>
 </div>
-    <p> SVG </p>
-    <svg width="400" height="400" id="svg-board"
-         style="border:1px solid;"
-    >
-        <circle  cx="200" cy="200" r="2" id="snake-head" class="snake snake-head"
-              style="fill:rgb(255,0,0)"
-        ></circle>
-            Sorry, your browser does not support inline SVG.
-    </svg>
-    <p> Canvas </p>
-    <canvas id="canvas-board" width="400" height="400"
-            style="border:1px solid #000000;">
-    </canvas>
+<p> SVG </p>
+<svg width="400" height="400" id="svg-board" style="border:1px solid;"
+>
+    <circle cx="200" cy="200" r="2" id="snake-head" class="snake snake-head" style="fill:rgb(255,0,0)"
+    ></circle>
+    Sorry, your browser does not support inline SVG.
+</svg>
+<p> Canvas </p>
+<canvas id="canvas-board" width="400" height="400" style="border:1px solid #000000;">
+</canvas>
 
-  <script src="../dist/bundle.js"></script>
+<script src="../dist/bundle.js"></script>
 </body>
 
 </html>

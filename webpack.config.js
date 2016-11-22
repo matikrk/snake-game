@@ -39,6 +39,7 @@ module.exports = {
         'unused': true,
         'trailing': true,
         'smarttabs': false,
+        'laxcomma': true,
         'globals': {},
         'predef': [
             'define',
