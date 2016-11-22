@@ -30,7 +30,7 @@ module.exports = {
         'curly': false,
         'eqeqeq': true,
         'immed': true,
-        'latedef': true,
+        'latedef': false,
         'newcap': true,
         'noarg': true,
         'quotmark': 'single',
