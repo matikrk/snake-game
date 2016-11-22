@@ -2,15 +2,16 @@ const config = {
     startFi: Math.PI,
     board: {x: 400, y: 400},
     startPoint: {x: 200, y: 200},
-    circleR: 1,
+    circleR: 3,
     rotationAngle: 0.07,
 };
+const step = config.circleR;
 
 let fi = config.startFi;
 let headPoint = config.startPoint;
 const occupiedPoints = [headPoint];
 
-const calculateNextStep = function (x, y, step = 1) {
+const calculateNextStep = function (x, y) {
     let newX = (x + step * Math.cos(fi)) % config.board.x;
     newX = newX <= 0 ? config.board.x - newX : newX;
     let newY = (y + step * Math.sin(fi)) % config.board.y;
@@ -49,7 +50,10 @@ const svg = {
         circleElem.setAttribute('r', config.circleR.toString());
         circleElem.setAttribute('style', 'fill:rgb(0,0,0)');
         this.board.appendChild(circleElem);
-    }
+    },
+    clear (){
+        [...this.board.childNodes].forEach(point => point.parentNode.removeChild(point))
+    },
 };
 
 const canvas = {
@@ -72,6 +76,10 @@ const canvas = {
         ctx.arc(headPoint.x, headPoint.y, config.circleR, 0, 2 * Math.PI);
         ctx.fill();
     },
+    clear (){
+        const ctx = this.board.getContext('2d');
+        ctx.clearRect(0, 0, this.board.width, this.board.height);
+    },
 };
 
 const rotateLeft = function () {
@@ -83,35 +91,52 @@ const rotateRight = function () {
 
 
 const checkCollision = function () {
-    const approximationError = 0.00000001;
-    return occupiedPoints.find(function (point) {
-        const distance = Math.sqrt(Math.pow(point.x - headPoint.x, 2) + Math.pow(point.y - headPoint.y, 2)) + approximationError;
-        return distance < config.circleR;
+    const approximationError = 0.1 * config.circleR;
+    return occupiedPoints.filter((point, i, a) => i != a.length - 1).find(function (point) {
+        const distance = Math.sqrt(Math.pow(point.x - headPoint.x, 2) + Math.pow(point.y - headPoint.y, 2));
+        return distance + approximationError < 2 * config.circleR;
     });
 };
+let collisionOccurred = false;
+const move = function () {
+    if (!collisionOccurred) {
+        headPoint = calculateNextStep(headPoint.x, headPoint.y);
+        const collisionPoint = checkCollision();
 
-const move = function (step = 1) {
-    headPoint = calculateNextStep(headPoint.x, headPoint.y, step);
-    const collisionPoint = checkCollision();
-
-    if (collisionPoint) {
-        console.log(`Collision in point {${headPoint.x},${headPoint.y}`);
-        drawCollision();
-    } else {
-        occupiedPoints.push(headPoint);
-        drawNextStep();
+        if (collisionPoint) {
+            collisionOccurred=true;
+            console.log(`Collision in point {${headPoint.x},${headPoint.y}`);
+            drawCollision();
+        } else {
+            occupiedPoints.push(headPoint);
+            drawNextStep();
+        }
     }
 };
 const drawNextStep = function () {
-    canvas.drawPoint();
-    svg.drawPoint();
+    setTimeout(() => {
+        canvas.drawPoint();
+        svg.drawPoint();
+    }, 0)
 };
 
 const drawCollision = function () {
-    canvas.drawCollision();
-    svg.drawCollision();
+
+
+    setTimeout(() => {
+        canvas.drawCollision();
+        svg.drawCollision();
+    }, 0)
+
+};
+const reset = function(){
+    collisionOccurred=false;
+    occupiedPoints.length=0;
+
+    svg.clear();
+    canvas.clear();
 };
 
 init();
 
-export default {move, rotateLeft, rotateRight};
+export default {move, rotateLeft, rotateRight, reset};

@@ -34,7 +34,7 @@ const rotate = {
 const gameControl = Object.assign(
     intervalHelper(main.move, timeBase),
     {
-        reset: () => [...document.querySelectorAll('.snake-tail')].forEach(tail => tail.parentNode.removeChild(tail))
+        reset: main.reset
     }
 );
 
