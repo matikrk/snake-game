@@ -38,7 +38,14 @@ const gameControl = Object.assign(
     }
 );
 
-window.game = gameControl;
+let startTime;
+window.game = Object.assign({}, gameControl, {
+    start(){
+        startTime = new Date();
+        gameControl.start();
+    }
+});
+main.eventListener('collision', () => console.log(new Date() - startTime));
 
 
 const keyLeft = 37;
