@@ -4,9 +4,10 @@ const config = {
     startPoint: {x: 200, y: 200},
     circleR: 5,
     rotationAngle: 0.07,
-    pointDensity:   2, // 3.9 max, coz with higher density rotating causes collision,
+    pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision,
     color: '#ff0000',
     collisionColor: '#000000',
+    wallOn: false,
 };
 
 let fi = config.startFi;
@@ -91,9 +92,13 @@ const checkCollision = function () {
     const approximationError = 0.1 * config.circleR;
     const circleDiameter = 2 * config.circleR - approximationError;
 
-    return occupiedPoints
+    const hitWall = config.wallOn && (headPoint.x < config.circleR || headPoint.x > config.board.x - config.circleR ||
+        headPoint.y < config.circleR || headPoint.y > config.board.y - config.circleR);
+
+    return hitWall ? headPoint : occupiedPoints
         .filter((point, i) => i < omitFromIndex)
         .find(function (point) {
+
             const distance = Math.sqrt(Math.pow(point.x - headPoint.x, 2) + Math.pow(point.y - headPoint.y, 2));
             return distance < circleDiameter;
         });
@@ -135,13 +140,13 @@ const reset = function () {
     svg.clear();
     canvas.clear();
 };
-const fireEvent=function(eventName,data){
-    listeners.forEach(listener=>listener.event===eventName?listener.func(data):null);
+const fireEvent = function (eventName, data) {
+    listeners.forEach(listener => listener.event === eventName ? listener.func(data) : null);
 };
 
-const listeners=[];
-const eventListener= function(eventName,callback){
-listeners.push({event:eventName,func:callback});
+const listeners = [];
+const eventListener = function (eventName, callback) {
+    listeners.push({event: eventName, func: callback});
 };
 
 init();
