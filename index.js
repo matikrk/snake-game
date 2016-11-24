@@ -1,5 +1,5 @@
-const main = require('./src/main');
-
+const Game = require('./src/Game');
+const game = new Game();
 const timeBase = 15;
 
 const intervalHelper = function (fnc, time) {
@@ -26,15 +26,15 @@ const intervalHelper = function (fnc, time) {
 };
 
 const rotate = {
-    left: intervalHelper(main.rotateLeft, timeBase / 2),
-    right: intervalHelper(main.rotateRight, timeBase / 2),
+    left: intervalHelper(()=>game.rotateLeft(), timeBase / 2),
+    right: intervalHelper(()=>game.rotateRight(), timeBase / 2),
 };
 
 
 const gameControl = Object.assign(
-    intervalHelper(main.move, timeBase),
+    intervalHelper(()=>game.move(), timeBase),
     {
-        reset: main.reset
+        reset: ()=>game.reset()
     }
 );
 
@@ -45,7 +45,7 @@ window.game = Object.assign({}, gameControl, {
         gameControl.start();
     }
 });
-main.eventListener('collision', () => console.log(new Date() - startTime));
+game.eventListener('collision', () => console.log(new Date() - startTime));
 
 
 const keyLeft = 37;

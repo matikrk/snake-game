@@ -1,4 +1,3 @@
-
 const listeners = [];
 const eventManager = {
     fireEvent: function (eventName, data) {
