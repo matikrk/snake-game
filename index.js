@@ -26,13 +26,17 @@ const intervalHelper = function (fnc, time) {
 };
 
 const rotate = {
-    left: intervalHelper(()=>game.rotateLeft(), timeBase / 2),
-    right: intervalHelper(()=>game.rotateRight(), timeBase / 2),
+    left: intervalHelper(()=>game.rotateLeft(game.getPlayers()[0]), timeBase / 2),
+    right: intervalHelper(()=>game.rotateRight(game.getPlayers()[0]), timeBase / 2),
 };
 
+const rotate2 = {
+    left: intervalHelper(()=>game.rotateLeft(game.getPlayers()[1]), timeBase / 2),
+    right: intervalHelper(()=>game.rotateRight(game.getPlayers()[1]), timeBase / 2),
+};
 
 const gameControl = Object.assign(
-    intervalHelper(()=>game.move(), timeBase),
+    intervalHelper(()=>game.moveAll(), timeBase),
     {
         reset: ()=>game.reset()
     }
@@ -52,6 +56,7 @@ const keyLeft = 37;
 const keyRight = 39;
 const esc = 27;
 const keyX = 88;
+const keyZ = 90;
 const onKeyDown = function (e) {
     switch (e.keyCode) {
         case keyLeft:
@@ -66,7 +71,10 @@ const onKeyDown = function (e) {
             gameControl.stop();
             break;
         case keyX:
-            gameControl.reset();
+            rotate2.right.start();
+            break;
+        case keyZ:
+            rotate2.left.start();
             break;
         default:
 
@@ -79,6 +87,13 @@ const onKeyUp = function (e) {
             break;
         case keyRight:
             rotate.right.stop();
+            break;
+
+        case keyX:
+            rotate2.right.stop();
+            break;
+        case keyZ:
+            rotate2.left.stop();
             break;
         default:
 

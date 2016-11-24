@@ -3,12 +3,21 @@ import MoveCalculator from './MoveCalculator';
 import eventManager from './eventManager';
 
 
-const snakeConfig = {
-    fi: Math.PI,
+const defaultSnakeConfig = {
+    name:'red',
+    fi: 2 * Math.PI,
     circleR: 2,
     color: '#ff0000',
     collisionColor: '#000000',
-    headPoint: {x: 200, y: 150},
+    headPoint: {x: 10, y: 10},
+};
+const snake2 = {
+    name:'blue',
+    fi: 2 *Math.PI,
+    circleR: 2,
+    color: '#0000ff',
+    collisionColor: '#000000',
+    headPoint: {x: 10, y: 100},
 };
 
 const defaultConfig = {
@@ -20,26 +29,32 @@ const defaultConfig = {
     pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
     players: [
-        snakeConfig
+        defaultSnakeConfig,
+        snake2
     ]
 };
 
 class Game {
     constructor(config, definedDomNode) {
         this.initializeVariables();
-
         const gameConfig = Object.assign({}, defaultConfig, config);
         const domNode = definedDomNode || document.getElementById(gameConfig.domNodeId);
 
         this.moveCalculator = new MoveCalculator(gameConfig);
         this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.svg, domNode, gameConfig);
 
-        this.move();
+        this.players = gameConfig.players;
+
+        this.moveAll();
     }
 
     initializeVariables() {
         this.collisionOccurred = false;
         this.occupiedPoints = [];
+    }
+
+    getPlayers() {
+        return this.players;
     }
 
     reset() {
@@ -62,15 +77,19 @@ class Game {
         }, 0);
     }
 
-    move() {
+    moveAll() {
+        this.players.forEach(snakeConfig => this.move(snakeConfig));
+    }
+
+    move(snakeConfig) {
         if (!this.collisionOccurred) {
 
             snakeConfig.headPoint = this.moveCalculator.calculateNextStep(snakeConfig);
-            const collisionPoint = this.moveCalculator.checkCollision(this.occupiedPoints, snakeConfig);
-            if (collisionPoint) {
+            const collision = this.moveCalculator.checkCollision(this.occupiedPoints, snakeConfig, this.players.length);
+            if (collision) {
                 eventManager.fireEvent('collision');
                 this.collisionOccurred = true;
-                console.log(`Collision in point {${snakeConfig.headPoint.x},${snakeConfig.headPoint.y}`);
+                console.log(`Snake ${snakeConfig.name} loose game`);
                 this.drawCollision(snakeConfig);
             } else {
                 this.occupiedPoints.push(snakeConfig.headPoint);
@@ -79,11 +98,11 @@ class Game {
         }
     }
 
-    rotateLeft() {
+    rotateLeft(snakeConfig) {
         this.moveCalculator.rotateLeft(snakeConfig);
     }
 
-    rotateRight() {
+    rotateRight(snakeConfig) {
         this.moveCalculator.rotateRight(snakeConfig);
     }
 
