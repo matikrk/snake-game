@@ -1,24 +1,25 @@
 import EngineFactory from './engines/DrawEngineFactory';
 
-import moveCalculator from './moveCalculator';
+import MoveCalculator from './MoveCalculator';
 import eventManager from './eventManager';
 
-const {calculateNextStep, rotateLeft, rotateRight, checkCollision} = moveCalculator;
+let moveCalculator ;
+let drawEngine;
 
 
 const snakeConfig = {
     fi: Math.PI,
-    circleR: 5,
-    rotationAngle: 0.07,
+    circleR: 2,
     color: '#ff0000',
     collisionColor: '#000000',
     headPoint: {x: 200, y: 150},
 };
 
-const gameConfig = {
+const defaultConfig={
     board: {
-        x: 300, y: 200
+        x: 400, y: 400
     },
+    rotationAngle: 0.07,
     pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
 };
@@ -26,10 +27,10 @@ const gameConfig = {
 const occupiedPoints = [snakeConfig.headPoint];
 
 
-
-let drawEngine ;
-const init = function () {
-    drawEngine = new EngineFactory(EngineFactory.engineTypes.svg, document.getElementById('custom-board'),gameConfig);
+const init = function (config) {
+    const gameConfig = Object.assign({},defaultConfig,config);
+    moveCalculator = new MoveCalculator(gameConfig);
+    drawEngine = new EngineFactory(EngineFactory.engineTypes.svg, document.getElementById('custom-board'), gameConfig);
     drawNextStep();
 };
 
@@ -38,8 +39,8 @@ let collisionOccurred = false;
 
 const move = function () {
     if (!collisionOccurred) {
-        snakeConfig.headPoint = calculateNextStep(snakeConfig, gameConfig);
-        const collisionPoint = checkCollision(occupiedPoints, snakeConfig, gameConfig);
+        snakeConfig.headPoint = moveCalculator.calculateNextStep(snakeConfig);
+        const collisionPoint = moveCalculator.checkCollision(occupiedPoints, snakeConfig);
         if (collisionPoint) {
             eventManager.fireEvent('collision');
             collisionOccurred = true;
@@ -76,8 +77,8 @@ init();
 
 export default {
     move,
-    rotateLeft: () => rotateLeft(snakeConfig),
-    rotateRight: () => rotateRight(snakeConfig),
+    rotateLeft: () => moveCalculator.rotateLeft(snakeConfig),
+    rotateRight: () => moveCalculator.rotateRight(snakeConfig),
     reset,
     eventListener: eventManager.eventListener,
 };
