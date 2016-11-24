@@ -1,11 +1,15 @@
 const moveCalculator = {
     calculateNextStep: function (snakeConfig, gameConfig) {
-        const {headPoint:{x, y}, circleR, fi}=snakeConfig;
-        const step = circleR / gameConfig.pointDensity;
-        let newX = (x + step * Math.cos(fi)) % gameConfig.board.x;
-        newX = newX <= 0 ? gameConfig.board.x - newX : newX;
-        let newY = (y + step * Math.sin(fi)) % gameConfig.board.y;
-        newY = newY <= 0 ? gameConfig.board.y - newY : newY;
+        const {headPoint:{x, y}, circleR, fi} = snakeConfig;
+        const {board:{x:boardX, y:boardY},pointDensity}=gameConfig;
+
+        const step = circleR / pointDensity;
+
+        let newX = (x + step * Math.cos(fi)) % boardX;
+        newX = newX <= 0 ? boardX - newX : newX;
+
+        let newY = (y + step * Math.sin(fi)) % boardY;
+        newY = newY <= 0 ? boardY - newY : newY;
 
         return {
             x: newX,
@@ -29,11 +33,10 @@ const moveCalculator = {
         return hitWall ? snakeConfig.headPoint : occupiedPoints
             .filter((point, i) => i < omitFromIndex)
             .find(function (point) {
-
                 const distance = Math.sqrt(Math.pow(point.x - snakeConfig.headPoint.x, 2) + Math.pow(point.y - snakeConfig.headPoint.y, 2));
                 return distance < circleDiameter;
             });
     },
 };
 
-module.exports = moveCalculator;
+export default moveCalculator;

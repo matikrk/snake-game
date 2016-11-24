@@ -10,7 +10,7 @@ const chooseEngine = function (engineType, CustomEngine) {
             return new Canvas();
         case DrawEngineFactory.engineTypes.custom:
             checkCustomEngine(CustomEngine);
-            return  new CustomEngine();
+            return new CustomEngine();
         default:
             throw `Unknown draw engine type (${engineType})`;
     }
