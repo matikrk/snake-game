@@ -1,6 +1,4 @@
-import canvas from './engines/canvas';
-import svg from './engines/svg';
-import EngineFactory from './engines/EngineFactory';
+import EngineFactory from './engines/DrawEngineFactory';
 
 import moveCalculator from './moveCalculator';
 import eventManager from './eventManager';
@@ -71,8 +69,7 @@ const reset = function () {
     collisionOccurred = false;
     occupiedPoints.length = 0; //clear array
 
-    svg.clear();
-    canvas.clear();
+    drawEngine.clear();
 };
 
 init();
