@@ -16,10 +16,6 @@ const svg = {
         circleElem.setAttribute('r', snakeConfig.circleR.toString());
         circleElem.setAttribute('style', `fill:${color}`);
         this.board.appendChild(circleElem);
-    }
-    ,
-    drawCollision (snakeConfig)    {
-        this.drawPoint(snakeConfig, snakeConfig.collisionColor);
     },
     clear (){
         [...this.board.childNodes].forEach(point => point.parentNode.removeChild(point));

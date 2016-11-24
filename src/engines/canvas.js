@@ -14,9 +14,6 @@ const canvas = {
         ctx.arc(snakeConfig.headPoint.x, snakeConfig.headPoint.y, snakeConfig.circleR, 0, 2 * Math.PI);
         ctx.fill();
     },
-    drawCollision (snakeConfig){
-        this.drawPoint(snakeConfig, snakeConfig.collisionColor);
-    },
     clear (){
         const ctx = this.board.getContext('2d');
         ctx.clearRect(0, 0, this.board.width, this.board.height);

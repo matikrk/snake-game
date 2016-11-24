@@ -1,9 +1,12 @@
 import canvas from './engines/canvas';
 import svg from './engines/svg';
+import EngineFactory from './engines/EngineFactory';
+
 import moveCalculator from './moveCalculator';
 import eventManager from './eventManager';
 
 const {calculateNextStep, rotateLeft, rotateRight, checkCollision} = moveCalculator;
+
 
 const snakeConfig = {
     fi: Math.PI,
@@ -25,9 +28,10 @@ const gameConfig = {
 const occupiedPoints = [snakeConfig.headPoint];
 
 
+
+let drawEngine ;
 const init = function () {
-    svg.init(document.getElementById('svg-board'), gameConfig);
-    canvas.init(document.getElementById('canvas-board'), gameConfig);
+    drawEngine = new EngineFactory(EngineFactory.engineTypes.svg, document.getElementById('custom-board'),gameConfig);
     drawNextStep();
 };
 
@@ -52,15 +56,13 @@ const move = function () {
 
 const drawNextStep = function () {
     setTimeout(() => {
-        canvas.drawPoint(snakeConfig);
-        svg.drawPoint(snakeConfig);
+        drawEngine.drawPoint(snakeConfig);
     }, 0);
 };
 
 const drawCollision = function () {
     setTimeout(() => {
-        canvas.drawCollision(snakeConfig);
-        svg.drawCollision(snakeConfig);
+        drawEngine.drawCollision(snakeConfig);
     }, 0);
 
 };
