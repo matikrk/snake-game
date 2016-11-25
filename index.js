@@ -26,13 +26,13 @@ const intervalHelper = function (fnc, time) {
 };
 
 const rotate = {
-    left: intervalHelper(()=>game.rotateLeft(game.getPlayers()[0]), timeBase / 2),
-    right: intervalHelper(()=>game.rotateRight(game.getPlayers()[0]), timeBase / 2),
+    left: intervalHelper(()=>game.getPlayers()[0].rotateLeft(), timeBase / 2),
+    right: intervalHelper(()=>game.getPlayers()[0].rotateRight(), timeBase / 2),
 };
 
 const rotate2 = {
-    left: intervalHelper(()=>game.rotateLeft(game.getPlayers()[1]), timeBase / 2),
-    right: intervalHelper(()=>game.rotateRight(game.getPlayers()[1]), timeBase / 2),
+    left: intervalHelper(()=>game.getPlayers()[1].rotateLeft(), timeBase / 2),
+    right: intervalHelper(()=>game.getPlayers()[1].rotateRight(), timeBase / 2),
 };
 
 const gameControl = Object.assign(
@@ -68,7 +68,7 @@ const onKeyDown = function (e) {
             rotate.right.start();
             break;
         case esc:
-            gameControl.stop();
+            gameControl.reset();
             break;
         case keyX:
             rotate2.right.start();

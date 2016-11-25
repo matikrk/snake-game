@@ -1,11 +1,11 @@
 class MoveCalculator {
     constructor(config) {
-        this.config = config;
+        this.playerConfig = config;
     }
 
     calculateNextStep(snakeConfig) {
         const {headPoint:{x, y}, circleR, fi} = snakeConfig;
-        const {board:{x:boardX, y:boardY}, pointDensity}=this.config;
+        const {board:{x:boardX, y:boardY}, pointDensity}=this.playerConfig;
 
         const step = circleR / pointDensity;
 
@@ -22,15 +22,15 @@ class MoveCalculator {
     }
 
     rotateLeft(snakeConfig) {
-        snakeConfig.fi -= this.config.rotationAngle;
+        snakeConfig.fi -= this.playerConfig.rotationAngle;
     }
 
     rotateRight(snakeConfig) {
-        snakeConfig.fi += this.config.rotationAngle;
+        snakeConfig.fi += this.playerConfig.rotationAngle;
     }
 
     checkCollision(occupiedPoints, snakeConfig, playingSnakes) {
-        const {pointDensity, board:{x:boardX, y:boardY}, wallOn}=this.config;
+        const {pointDensity, board:{x:boardX, y:boardY}, wallOn}=this.playerConfig;
         const {headPoint:{x, y}, circleR}=snakeConfig;
 
         const stepsToOmit = Math.ceil(2 * pointDensity - 1) * playingSnakes;

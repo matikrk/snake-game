@@ -4,7 +4,7 @@ import eventManager from './eventManager';
 
 
 const defaultSnakeConfig = {
-    name:'red',
+    name: 'red',
     fi: 2 * Math.PI,
     circleR: 2,
     color: '#ff0000',
@@ -12,8 +12,8 @@ const defaultSnakeConfig = {
     headPoint: {x: 10, y: 10},
 };
 const snake2 = {
-    name:'blue',
-    fi: 2 *Math.PI,
+    name: 'blue',
+    fi: 2 * Math.PI,
     circleR: 2,
     color: '#0000ff',
     collisionColor: '#000000',
@@ -33,6 +33,39 @@ const defaultConfig = {
         snake2
     ]
 };
+class Player {
+    constructor(gameContext, playerConfig) {
+        this.gameContext = gameContext;
+        this.playerConfig = playerConfig;
+        this.collisionOccurred=false;
+    }
+
+    rotateLeft() {
+        this.gameContext.moveCalculator.rotateLeft(this.playerConfig);
+    }
+
+    rotateRight() {
+        this.gameContext.moveCalculator.rotateRight(this.playerConfig);
+    }
+
+    move() {
+        if (!this.collisionOccurred) {
+            this.playerConfig.headPoint = this.gameContext.moveCalculator.calculateNextStep(this.playerConfig);
+            const collision = this.gameContext.moveCalculator.checkCollision(
+                this.gameContext.occupiedPoints, this.playerConfig, this.gameContext.getNumberOfActivePlayers());
+            if (collision) {
+
+                this.collisionOccurred=true;
+                this.gameContext.onCollision(this.playerConfig);
+
+                this.gameContext.drawCollision(this.playerConfig);
+            } else {
+                this.gameContext.occupiedPoints.push(this.playerConfig.headPoint);
+                this.gameContext.drawNextStep(this.playerConfig);
+            }
+        }
+    }
+}
 
 class Game {
     constructor(config, definedDomNode) {
@@ -41,16 +74,37 @@ class Game {
         const domNode = definedDomNode || document.getElementById(gameConfig.domNodeId);
 
         this.moveCalculator = new MoveCalculator(gameConfig);
-        this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.svg, domNode, gameConfig);
+        this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.canvas, domNode, gameConfig);
 
-        this.players = gameConfig.players;
+        gameConfig.players.forEach(playerConfig => this.addPlayer(playerConfig));
 
         this.moveAll();
     }
 
+    getNumberOfActivePlayers() {
+        return this.players.filter(player=>player.collisionOccurred===false).length; // later all-collision
+    }
+
+    addPlayer(playerConfig) {
+        this.players.push(new Player(this, playerConfig));
+    }
+
+    deletePlayer(playerName) {
+        this.players = this.players.filter(player => player.name !== playerName);
+    }
+
     initializeVariables() {
+        this.players = [];
         this.collisionOccurred = false;
         this.occupiedPoints = [];
+    }
+
+    onCollision(playerConfig) {
+        console.log(`Snake ${playerConfig.name} loose game`);
+
+        eventManager.fireEvent('collision');
+        this.collisionOccurred = true;
+
     }
 
     getPlayers() {
@@ -78,33 +132,9 @@ class Game {
     }
 
     moveAll() {
-        this.players.forEach(snakeConfig => this.move(snakeConfig));
+        this.players.forEach(player => player.move());
     }
 
-    move(snakeConfig) {
-        if (!this.collisionOccurred) {
-
-            snakeConfig.headPoint = this.moveCalculator.calculateNextStep(snakeConfig);
-            const collision = this.moveCalculator.checkCollision(this.occupiedPoints, snakeConfig, this.players.length);
-            if (collision) {
-                eventManager.fireEvent('collision');
-                this.collisionOccurred = true;
-                console.log(`Snake ${snakeConfig.name} loose game`);
-                this.drawCollision(snakeConfig);
-            } else {
-                this.occupiedPoints.push(snakeConfig.headPoint);
-                this.drawNextStep(snakeConfig);
-            }
-        }
-    }
-
-    rotateLeft(snakeConfig) {
-        this.moveCalculator.rotateLeft(snakeConfig);
-    }
-
-    rotateRight(snakeConfig) {
-        this.moveCalculator.rotateRight(snakeConfig);
-    }
 
     eventListener(...arg) {
         eventManager.eventListener(...arg);
