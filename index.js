@@ -30,7 +30,7 @@ const players = [
 players.forEach(playerConfig => game.addPlayer(playerConfig));
 game.deletePlayer('red');
 
-const timeBase = 15;
+const timeBase = 10;
 
 const intervalHelper = function (fnc, time) {
     let started = false;
@@ -65,23 +65,8 @@ const rotate2 = {
     right: intervalHelper(() => game.getPlayers()[1].rotateRight(), timeBase / 2),
 };
 
-const gameControl = Object.assign(
-    intervalHelper(() => game.moveAll(), timeBase),
-    {
-        reset: () => game.reset()
-    }
-);
-
 let startTime;
-window.game = Object.assign({}, gameControl, {
-    start(){
-        startTime = new Date();
-        gameControl.start();
-    },
-    game
-});
-game.eventListener('collision', () => console.log(new Date() - startTime));
-
+window.gameControll = game;
 
 const keyLeft = 37;
 const keyRight = 39;
@@ -99,7 +84,7 @@ const onKeyDown = function (e) {
             rotate.right.start();
             break;
         case esc:
-            gameControl.reset();
+            game.reset();
             break;
         case keyX:
             rotate2.right.start();

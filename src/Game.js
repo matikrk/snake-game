@@ -12,16 +12,17 @@ const defaultConfig = {
     rotationAngle: 0.07,
     pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
+    timeBase: 10,
 };
 
 class Game {
     constructor(config, definedDomNode) {
         this.players = [];
-        const gameConfig = Object.assign({}, defaultConfig, config);
-        const domNode = definedDomNode || document.getElementById(gameConfig.domNodeId);
+        this.gameConfig = Object.assign({}, defaultConfig, config);
+        const domNode = definedDomNode || document.getElementById(this.gameConfig.domNodeId);
 
-        this.moveCalculator = new MoveCalculator(gameConfig);
-        this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.canvas, domNode, gameConfig);
+        this.moveCalculator = new MoveCalculator(this.gameConfig);
+        this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.canvas, domNode, this.gameConfig);
 
         this.moveAll();
     }
@@ -39,7 +40,6 @@ class Game {
 
         eventManager.fireEvent('collision');
         this.collisionOccurred = true;
-
     }
 
     getPlayers() {
@@ -73,9 +73,14 @@ class Game {
         this.players.forEach(player => player.move());
     }
 
+    start(){
+        this.mainInterval= setInterval(()=>{
+            this.moveAll();
+        }, this.gameConfig.timeBase);
 
-    eventListener(...arg) {
-        eventManager.eventListener(...arg);
+    }
+    stop(){
+        clearInterval(this.mainInterval);
     }
 }
 
