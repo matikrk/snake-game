@@ -29,11 +29,11 @@ class MoveCalculator {
         snakeConfig.fi += this.playerConfig.rotationAngle;
     }
 
-    checkCollision(occupiedPoints, snakeConfig, playingSnakes) {
+    checkCollision(occupiedPoints, snakeConfig, ownSnake) {
         const {pointDensity, board:{x:boardX, y:boardY}, wallOn}=this.playerConfig;
         const {headPoint:{x, y}, circleR}=snakeConfig;
 
-        const stepsToOmit = Math.ceil(2 * pointDensity - 1) * playingSnakes;
+        const stepsToOmit = ownSnake ? Math.ceil(2 * pointDensity - 1) : 0;
         const omitFromIndex = occupiedPoints.length - stepsToOmit;
 
         const approximationError = 0.1 * circleR;

@@ -37,7 +37,8 @@ class Player {
     constructor(gameContext, playerConfig) {
         this.gameContext = gameContext;
         this.playerConfig = playerConfig;
-        this.collisionOccurred=false;
+        this.collisionOccurred = false;
+        this.occupiedPoints = [];
     }
 
     rotateLeft() {
@@ -51,16 +52,18 @@ class Player {
     move() {
         if (!this.collisionOccurred) {
             this.playerConfig.headPoint = this.gameContext.moveCalculator.calculateNextStep(this.playerConfig);
-            const collision = this.gameContext.moveCalculator.checkCollision(
-                this.gameContext.occupiedPoints, this.playerConfig, this.gameContext.getNumberOfActivePlayers());
+            const collision = this.gameContext.players.find(({playerConfig:{name},occupiedPoints})=>{
+                return this.gameContext.moveCalculator.checkCollision(
+                    occupiedPoints, this.playerConfig, name===this.playerConfig.name);
+            });
             if (collision) {
 
-                this.collisionOccurred=true;
+                this.collisionOccurred = true;
                 this.gameContext.onCollision(this.playerConfig);
 
                 this.gameContext.drawCollision(this.playerConfig);
             } else {
-                this.gameContext.occupiedPoints.push(this.playerConfig.headPoint);
+                this.occupiedPoints.push(this.playerConfig.headPoint);
                 this.gameContext.drawNextStep(this.playerConfig);
             }
         }
@@ -81,10 +84,6 @@ class Game {
         this.moveAll();
     }
 
-    getNumberOfActivePlayers() {
-        return this.players.filter(player=>player.collisionOccurred===false).length; // later all-collision
-    }
-
     addPlayer(playerConfig) {
         this.players.push(new Player(this, playerConfig));
     }
@@ -96,7 +95,6 @@ class Game {
     initializeVariables() {
         this.players = [];
         this.collisionOccurred = false;
-        this.occupiedPoints = [];
     }
 
     onCollision(playerConfig) {
@@ -112,7 +110,7 @@ class Game {
     }
 
     reset() {
-        this.collisionOccurred = false;
+        this.players.forEach(player => player.collisionOccurred = false);
         this.occupiedPoints.length = 0; //clear array
 
         this.drawEngine.clear();

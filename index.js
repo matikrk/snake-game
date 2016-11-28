@@ -47,7 +47,8 @@ window.game = Object.assign({}, gameControl, {
     start(){
         startTime = new Date();
         gameControl.start();
-    }
+    },
+    game
 });
 game.eventListener('collision', () => console.log(new Date() - startTime));
 
