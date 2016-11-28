@@ -7,6 +7,10 @@ const defaultConfig = {
     board: {
         x: 400, y: 400
     },
+    drawEngine: {
+        type: DrawEngineFactory.engineTypes.canvas,
+        CustomDrawEngine: null
+    },
     rotationAngle: 0.07,
     pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
@@ -14,13 +18,13 @@ const defaultConfig = {
 };
 
 class Game {
-    constructor(definedDomNode,config) {
+    constructor(definedDomNode, config) {
         this.players = [];
         this.gameConfig = Object.assign({}, defaultConfig, config);
         const domNode = definedDomNode;
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
-        this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.canvas, domNode, this.gameConfig);
+        this.drawEngine = new DrawEngineFactory(this.gameConfig.drawEngine.type, domNode, this.gameConfig, this.gameConfig.drawEngine.CustomDrawEngine);
 
         this.moveAll();
     }
@@ -68,14 +72,15 @@ class Game {
         this.players.forEach(player => player.move());
     }
 
-    start(){
-        this.mainInterval= setInterval(()=>{
+    start() {
+        this.mainInterval = setInterval(() => {
             this.moveAll();
 
         }, this.gameConfig.timeBase);
 
     }
-    stop(){
+
+    stop() {
         clearInterval(this.mainInterval);
     }
 }
