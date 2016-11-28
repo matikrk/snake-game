@@ -7,7 +7,7 @@ class Player {
     }
 
     move() {
-        if (true || !this.collisionOccurred) {
+        if (!this.collisionOccurred) {
             if(this.rotateRight){
                 this.gameContext.moveCalculator.rotateRight(this.playerConfig);
             }
