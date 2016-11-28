@@ -2,9 +2,7 @@ module.exports = {
     entry: './index.js',
     output: {
         filename: './dist/bundle.js',
-        sourceMapFilename: './dist/bundle.map',
-        library: 'es6Boilerplate',
-        libraryTarget: 'umd'
+        sourceMapFilename: './dist/bundle.map'
     },
     module: {
         preLoaders: [{
