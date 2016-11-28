@@ -6,16 +6,15 @@ class Player {
         this.occupiedPoints = [];
     }
 
-    rotateLeft() {
-        this.gameContext.moveCalculator.rotateLeft(this.playerConfig);
-    }
-
-    rotateRight() {
-        this.gameContext.moveCalculator.rotateRight(this.playerConfig);
-    }
-
     move() {
-        if (!this.collisionOccurred) {
+        if (true || !this.collisionOccurred) {
+            if(this.rotateRight){
+                this.gameContext.moveCalculator.rotateRight(this.playerConfig);
+            }
+            if(this.rotateLeft){
+                this.gameContext.moveCalculator.rotateLeft(this.playerConfig);
+            }
+
             this.playerConfig.headPoint = this.gameContext.moveCalculator.calculateNextStep(this.playerConfig);
             const collision = this.gameContext.players.find(({playerConfig:{name}, occupiedPoints}) => {
                 return this.gameContext.moveCalculator.checkCollision(

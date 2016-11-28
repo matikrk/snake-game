@@ -1,11 +1,9 @@
 import DrawEngineFactory from './engines/DrawEngineFactory';
 import MoveCalculator from './MoveCalculator';
-import eventManager from './eventManager';
 import Player from './Player';
 
 
 const defaultConfig = {
-    domNodeId: 'game-board',
     board: {
         x: 400, y: 400
     },
@@ -16,10 +14,10 @@ const defaultConfig = {
 };
 
 class Game {
-    constructor(config, definedDomNode) {
+    constructor(definedDomNode,config) {
         this.players = [];
         this.gameConfig = Object.assign({}, defaultConfig, config);
-        const domNode = definedDomNode || document.getElementById(this.gameConfig.domNodeId);
+        const domNode = definedDomNode;
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
         this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.canvas, domNode, this.gameConfig);
@@ -37,9 +35,6 @@ class Game {
 
     onCollision(playerConfig) {
         console.log(`Snake ${playerConfig.name} loose game`);
-
-        eventManager.fireEvent('collision');
-        this.collisionOccurred = true;
     }
 
     getPlayers() {
@@ -76,6 +71,7 @@ class Game {
     start(){
         this.mainInterval= setInterval(()=>{
             this.moveAll();
+
         }, this.gameConfig.timeBase);
 
     }

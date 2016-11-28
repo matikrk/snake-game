@@ -1,5 +1,7 @@
 const Game = require('./src/Game');
-const game = new Game();
+
+const htmlNode = document.getElementById('game-board');
+const game = new Game(htmlNode);
 
 const players = [
     {
@@ -30,43 +32,8 @@ const players = [
 players.forEach(playerConfig => game.addPlayer(playerConfig));
 game.deletePlayer('red');
 
-const timeBase = 10;
-
-const intervalHelper = function (fnc, time) {
-    let started = false;
-    let interval;
-    const start = function () {
-        if (!started) {
-            interval = setInterval(fnc, time);
-            started = true;
-        }
-    };
-    const stop = function () {
-        clearInterval(interval);
-        started = false;
-    };
-    const toggle = function () {
-        if (started) {
-            stop();
-        } else {
-            start();
-        }
-    };
-    return {start, stop, toggle};
-};
-
-const rotate = {
-    left: intervalHelper(() => game.getPlayers()[0].rotateLeft(), timeBase / 2),
-    right: intervalHelper(() => game.getPlayers()[0].rotateRight(), timeBase / 2),
-};
-
-const rotate2 = {
-    left: intervalHelper(() => game.getPlayers()[1].rotateLeft(), timeBase / 2),
-    right: intervalHelper(() => game.getPlayers()[1].rotateRight(), timeBase / 2),
-};
-
-let startTime;
 window.gameControll = game;
+
 
 const keyLeft = 37;
 const keyRight = 39;
@@ -77,20 +44,20 @@ const onKeyDown = function (e) {
     switch (e.keyCode) {
         case keyLeft:
             e.preventDefault();
-            rotate.left.start();
+            game.getPlayers()[0].rotateLeft = true;
             break;
         case keyRight:
             e.preventDefault();
-            rotate.right.start();
+            game.getPlayers()[0].rotateRight = true;
+            break;
+        case keyZ:
+            game.getPlayers()[1].rotateLeft = true;
+            break;
+        case keyX:
+            game.getPlayers()[1].rotateRight= true;
             break;
         case esc:
             game.reset();
-            break;
-        case keyX:
-            rotate2.right.start();
-            break;
-        case keyZ:
-            rotate2.left.start();
             break;
         default:
 
@@ -99,22 +66,22 @@ const onKeyDown = function (e) {
 const onKeyUp = function (e) {
     switch (e.keyCode) {
         case keyLeft:
-            rotate.left.stop();
+            game.getPlayers()[0].rotateLeft = false;
             break;
         case keyRight:
-            rotate.right.stop();
-            break;
-
-        case keyX:
-            rotate2.right.stop();
+            game.getPlayers()[0].rotateRight = false;
             break;
         case keyZ:
-            rotate2.left.stop();
+            game.getPlayers()[1].rotateLeft = false;
+            break;
+        case keyX:
+            game.getPlayers()[1].rotateRight= false;
             break;
         default:
 
     }
 };
+
 window.addEventListener('keydown', onKeyDown);
 window.addEventListener('keyup', onKeyUp);
 
