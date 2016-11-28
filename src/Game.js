@@ -1,24 +1,8 @@
 import DrawEngineFactory from './engines/DrawEngineFactory';
 import MoveCalculator from './MoveCalculator';
 import eventManager from './eventManager';
+import Player from './Player';
 
-
-const defaultSnakeConfig = {
-    name: 'red',
-    fi: 2 * Math.PI,
-    circleR: 2,
-    color: '#ff0000',
-    collisionColor: '#000000',
-    headPoint: {x: 10, y: 10},
-};
-const snake2 = {
-    name: 'blue',
-    fi: 2 * Math.PI,
-    circleR: 2,
-    color: '#0000ff',
-    collisionColor: '#000000',
-    headPoint: {x: 10, y: 100},
-};
 
 const defaultConfig = {
     domNodeId: 'game-board',
@@ -28,58 +12,16 @@ const defaultConfig = {
     rotationAngle: 0.07,
     pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
-    players: [
-        defaultSnakeConfig,
-        snake2
-    ]
 };
-class Player {
-    constructor(gameContext, playerConfig) {
-        this.gameContext = gameContext;
-        this.playerConfig = playerConfig;
-        this.collisionOccurred = false;
-        this.occupiedPoints = [];
-    }
-
-    rotateLeft() {
-        this.gameContext.moveCalculator.rotateLeft(this.playerConfig);
-    }
-
-    rotateRight() {
-        this.gameContext.moveCalculator.rotateRight(this.playerConfig);
-    }
-
-    move() {
-        if (!this.collisionOccurred) {
-            this.playerConfig.headPoint = this.gameContext.moveCalculator.calculateNextStep(this.playerConfig);
-            const collision = this.gameContext.players.find(({playerConfig:{name},occupiedPoints})=>{
-                return this.gameContext.moveCalculator.checkCollision(
-                    occupiedPoints, this.playerConfig, name===this.playerConfig.name);
-            });
-            if (collision) {
-
-                this.collisionOccurred = true;
-                this.gameContext.onCollision(this.playerConfig);
-
-                this.gameContext.drawCollision(this.playerConfig);
-            } else {
-                this.occupiedPoints.push(this.playerConfig.headPoint);
-                this.gameContext.drawNextStep(this.playerConfig);
-            }
-        }
-    }
-}
 
 class Game {
     constructor(config, definedDomNode) {
-        this.initializeVariables();
+        this.players = [];
         const gameConfig = Object.assign({}, defaultConfig, config);
         const domNode = definedDomNode || document.getElementById(gameConfig.domNodeId);
 
         this.moveCalculator = new MoveCalculator(gameConfig);
         this.drawEngine = new DrawEngineFactory(DrawEngineFactory.engineTypes.canvas, domNode, gameConfig);
-
-        gameConfig.players.forEach(playerConfig => this.addPlayer(playerConfig));
 
         this.moveAll();
     }
@@ -89,12 +31,7 @@ class Game {
     }
 
     deletePlayer(playerName) {
-        this.players = this.players.filter(player => player.name !== playerName);
-    }
-
-    initializeVariables() {
-        this.players = [];
-        this.collisionOccurred = false;
+        this.players = this.players.filter(player => player.playerConfig.name !== playerName);
     }
 
     onCollision(playerConfig) {
@@ -110,8 +47,11 @@ class Game {
     }
 
     reset() {
-        this.players.forEach(player => player.collisionOccurred = false);
-        this.occupiedPoints.length = 0; //clear array
+        this.players.forEach(player => {
+                player.collisionOccurred = false;
+                player.occupiedPoints.length = 0;
+            }
+        );
 
         this.drawEngine.clear();
     }

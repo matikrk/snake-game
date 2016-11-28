@@ -1,5 +1,35 @@
 const Game = require('./src/Game');
 const game = new Game();
+
+const players = [
+    {
+        name: 'red',
+        fi: 2 * Math.PI,
+        circleR: 2,
+        color: '#ff0000',
+        collisionColor: '#000000',
+        headPoint: {x: 10, y: 10},
+    },
+    {
+        name: 'green',
+        fi: 2 * Math.PI,
+        circleR: 2,
+        color: '#00ff00',
+        collisionColor: '#000000',
+        headPoint: {x: 10, y: 20},
+    },
+    {
+        name: 'blue',
+        fi: 2 * Math.PI,
+        circleR: 2,
+        color: '#0000ff',
+        collisionColor: '#000000',
+        headPoint: {x: 10, y: 100},
+    },
+];
+players.forEach(playerConfig => game.addPlayer(playerConfig));
+game.deletePlayer('red');
+
 const timeBase = 15;
 
 const intervalHelper = function (fnc, time) {
@@ -26,19 +56,19 @@ const intervalHelper = function (fnc, time) {
 };
 
 const rotate = {
-    left: intervalHelper(()=>game.getPlayers()[0].rotateLeft(), timeBase / 2),
-    right: intervalHelper(()=>game.getPlayers()[0].rotateRight(), timeBase / 2),
+    left: intervalHelper(() => game.getPlayers()[0].rotateLeft(), timeBase / 2),
+    right: intervalHelper(() => game.getPlayers()[0].rotateRight(), timeBase / 2),
 };
 
 const rotate2 = {
-    left: intervalHelper(()=>game.getPlayers()[1].rotateLeft(), timeBase / 2),
-    right: intervalHelper(()=>game.getPlayers()[1].rotateRight(), timeBase / 2),
+    left: intervalHelper(() => game.getPlayers()[1].rotateLeft(), timeBase / 2),
+    right: intervalHelper(() => game.getPlayers()[1].rotateRight(), timeBase / 2),
 };
 
 const gameControl = Object.assign(
-    intervalHelper(()=>game.moveAll(), timeBase),
+    intervalHelper(() => game.moveAll(), timeBase),
     {
-        reset: ()=>game.reset()
+        reset: () => game.reset()
     }
 );
 

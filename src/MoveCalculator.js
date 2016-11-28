@@ -1,11 +1,11 @@
 class MoveCalculator {
     constructor(config) {
-        this.playerConfig = config;
+        this.gameConfig = config;
     }
 
     calculateNextStep(snakeConfig) {
         const {headPoint:{x, y}, circleR, fi} = snakeConfig;
-        const {board:{x:boardX, y:boardY}, pointDensity}=this.playerConfig;
+        const {board:{x:boardX, y:boardY}, pointDensity} = this.gameConfig;
 
         const step = circleR / pointDensity;
 
@@ -22,16 +22,16 @@ class MoveCalculator {
     }
 
     rotateLeft(snakeConfig) {
-        snakeConfig.fi -= this.playerConfig.rotationAngle;
+        snakeConfig.fi -= this.gameConfig.rotationAngle;
     }
 
     rotateRight(snakeConfig) {
-        snakeConfig.fi += this.playerConfig.rotationAngle;
+        snakeConfig.fi += this.gameConfig.rotationAngle;
     }
 
-    checkCollision(occupiedPoints, snakeConfig, ownSnake) {
-        const {pointDensity, board:{x:boardX, y:boardY}, wallOn}=this.playerConfig;
-        const {headPoint:{x, y}, circleR}=snakeConfig;
+    checkCollision(occupiedPoints, playerConfig, ownSnake) {
+        const {pointDensity, board:{x:boardX, y:boardY}, wallOn} = this.gameConfig;
+        const {headPoint:{x, y}, circleR} = playerConfig;
 
         const stepsToOmit = ownSnake ? Math.ceil(2 * pointDensity - 1) : 0;
         const omitFromIndex = occupiedPoints.length - stepsToOmit;
@@ -40,10 +40,11 @@ class MoveCalculator {
         const circleDiameter = 2 * circleR - approximationError;
 
         const hitWall = wallOn && (x < circleR || x > boardX - circleR || y < circleR || y > boardY - circleR);
+
         if (hitWall) {
             return true;
         } else {
-            const {sqrt, pow}= Math;
+            const {sqrt, pow} = Math;
             const collisionPoint = occupiedPoints.filter((point, i) => i < omitFromIndex)
                 .find(function (point) {
                     const distance = sqrt(pow(point.x - x, 2) + pow(point.y - y, 2));
@@ -53,6 +54,5 @@ class MoveCalculator {
         }
     }
 }
-
 
 export default MoveCalculator;
