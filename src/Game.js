@@ -20,6 +20,8 @@ const defaultConfig = {
 class Game {
     constructor(definedDomNode, config) {
         this.players = [];
+        this.tick = 0;
+
         this.gameConfig = Object.assign({}, defaultConfig, config);
         const domNode = definedDomNode;
 
@@ -37,8 +39,14 @@ class Game {
 
     onCollision(playerConfig) {
         /* eslint-disable no-console */
-        console.log(`Snake ${playerConfig.name} loose game`);
+        console.log(`Snake ${playerConfig.name} loose game, points ${this.tick}`);
         /* eslint-enable no-alert, no-console */
+
+        const someonePlay = !!this.players.find(player => player.collisionOccurred === false);
+        if (!someonePlay) {
+            this.stop();
+            this.tick = 0;
+        }
     }
 
     getPlayers() {
@@ -46,6 +54,8 @@ class Game {
     }
 
     reset() {
+
+        this.tick = 0;
         this.players.forEach(
             player => {
                 player.collisionOccurred = false;
@@ -56,16 +66,16 @@ class Game {
         this.drawEngine.clear();
     }
 
-    drawCollision(snakeConfig) {
+    drawCollision(playerConfig) {
         setTimeout(() => {
-            this.drawEngine.drawCollision(snakeConfig);
+            this.drawEngine.drawCollision(playerConfig);
         }, 0);
 
     }
 
-    drawNextStep(snakeConfig) {
+    drawNextStep(playerConfig) {
         setTimeout(() => {
-            this.drawEngine.drawPoint(snakeConfig);
+            this.drawEngine.drawPoint(playerConfig);
         }, 0);
     }
 
@@ -74,9 +84,10 @@ class Game {
     }
 
     start() {
+
         this.mainInterval = setInterval(() => {
             this.moveAll();
-
+            this.tick++;
         }, this.gameConfig.timeBase);
 
     }
