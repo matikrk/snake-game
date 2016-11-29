@@ -11,11 +11,19 @@ const defaultConfig = {
         type: DrawEngineFactory.engineTypes.canvas,
         CustomDrawEngine: null
     },
-    circleR:2,
+    circleR: 2,
     rotationAngle: 0.07,
     pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
     timeBase: 10,
+};
+
+var shuffleArray = function (array) {
+    const newMap = array.map(b => {
+        return {x: b, r: ~~(Math.random() * 100)};
+    });
+    newMap.sort((c, d) => c.r > d.r);
+    return newMap.map(c => c.x);
 };
 
 class Game {
@@ -79,7 +87,8 @@ class Game {
     }
 
     moveAll() {
-        this.players.forEach(player => player.move());
+        //we need shuffle Array to avoid head-head collision win to 1st player on array player
+        shuffleArray(this.players).forEach(player => player.move());
     }
 
     start() {
