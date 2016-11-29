@@ -11,6 +11,7 @@ const defaultConfig = {
         type: DrawEngineFactory.engineTypes.canvas,
         CustomDrawEngine: null
     },
+    circleR:2,
     rotationAngle: 0.07,
     pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
@@ -71,16 +72,9 @@ class Game {
         this.moveAll();
     }
 
-    drawCollision(playerConfig) {
+    drawNextStep(point) {
         setTimeout(() => {
-            this.drawEngine.drawCollision(playerConfig);
-        }, 0);
-
-    }
-
-    drawNextStep(playerConfig) {
-        setTimeout(() => {
-            this.drawEngine.drawPoint(playerConfig);
+            this.drawEngine.drawPoint(point);
         }, 0);
     }
 

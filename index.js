@@ -1,13 +1,12 @@
 const Game = require('./src/Game');
 
 const htmlNode = document.getElementById('game-board');
-const game = new Game(htmlNode, {drawEngine: {type: 'canvas'}});
+const game = new Game(htmlNode);
 
 const players = [
     {
         name: 'red',
         fi: 2 * Math.PI,
-        circleR: 2,
         color: '#ff0000',
         collisionColor: '#000000',
         headPoint: {x: 10, y: 10},
@@ -15,7 +14,6 @@ const players = [
     {
         name: 'green',
         fi: 2 * Math.PI,
-        circleR: 2,
         color: '#00ff00',
         collisionColor: '#000000',
         headPoint: {x: 10, y: 20},
@@ -23,7 +21,6 @@ const players = [
     {
         name: 'blue',
         fi: 2 * Math.PI,
-        circleR: 2,
         color: '#0000ff',
         collisionColor: '#000000',
         headPoint: {x: 10, y: 100},

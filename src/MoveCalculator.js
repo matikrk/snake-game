@@ -4,11 +4,10 @@ class MoveCalculator {
     }
 
     calculateNextStep(snakeConfig) {
-        const {headPoint:{x, y}, circleR, fi} = snakeConfig;
-        const {board:{x:boardX, y:boardY}, pointDensity} = this.gameConfig;
-
-        const step = circleR / pointDensity;
-
+        const {headPoint:{x, y}, fi, sizeMultiplier} = snakeConfig;
+        const {board:{x:boardX, y:boardY}, pointDensity, circleR} = this.gameConfig;
+        const r = circleR * sizeMultiplier;
+        const step = r / pointDensity;
         let newX = (x + step * Math.cos(fi)) % boardX;
         newX = newX <= 0 ? boardX - newX : newX;
 
@@ -30,16 +29,17 @@ class MoveCalculator {
     }
 
     checkCollision(occupiedPoints, playerConfig, ownSnake) {
-        const {pointDensity, board:{x:boardX, y:boardY}, wallOn} = this.gameConfig;
-        const {headPoint:{x, y}, circleR} = playerConfig;
+        const {pointDensity, board:{x:boardX, y:boardY}, wallOn, circleR} = this.gameConfig;
+        const {headPoint:{x, y}, sizeMultiplier} = playerConfig;
 
-        const stepsToOmit = ownSnake ? Math.ceil(2 * pointDensity - 1) : 0;
+        const r = sizeMultiplier * circleR;
+
+        const stepsToOmit = ownSnake ? Math.ceil(2 * pointDensity * sizeMultiplier - 1) : 0;
         const omitFromIndex = occupiedPoints.length - stepsToOmit;
 
-        const approximationError = 0.1 * circleR;
-        const circleDiameter = 2 * circleR - approximationError;
+        const approximationError = 0.01 * r;
 
-        const hitWall = wallOn && (x < circleR || x > boardX - circleR || y < circleR || y > boardY - circleR);
+        const hitWall = wallOn && (x < r || x > boardX - r || y < r || y > boardY - r);
 
         if (hitWall) {
             return true;
@@ -47,8 +47,9 @@ class MoveCalculator {
             const {sqrt, pow} = Math;
             const collisionPoint = occupiedPoints.filter((point, i) => i < omitFromIndex)
                 .find(function (point) {
+                    const minDistance = r + point.r - approximationError;
                     const distance = sqrt(pow(point.x - x, 2) + pow(point.y - y, 2));
-                    return distance < circleDiameter;
+                    return distance < minDistance;
                 });
             return !!collisionPoint;
         }

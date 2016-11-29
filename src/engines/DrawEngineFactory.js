@@ -37,19 +37,8 @@ class DrawEngineFactory {
         this.engine.init(domNode, gameConfig);
     }
 
-    drawPoint(snakeConfig, color) {
-        const point = {
-            x: snakeConfig.headPoint.x,
-            y: snakeConfig.headPoint.y,
-            r: snakeConfig.circleR,
-            color: color || snakeConfig.color
-        };
-
+    drawPoint(point) {
         this.engine.drawPoint(point);
-    }
-
-    drawCollision(snakeConfig) {
-        this.drawPoint(snakeConfig, snakeConfig.collisionColor);
     }
 
     clear() {
