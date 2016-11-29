@@ -60,10 +60,15 @@ class Game {
             player => {
                 player.collisionOccurred = false;
                 player.occupiedPoints.length = 0;
+
+                player.playerConfig.headPoint.x = this.gameConfig.board.x * Math.random();
+                player.playerConfig.headPoint.y = this.gameConfig.board.y * Math.random();
+                player.playerConfig.fi = 2 * Math.PI * Math.random();
             }
         );
 
         this.drawEngine.clear();
+        this.moveAll();
     }
 
     drawCollision(playerConfig) {
@@ -84,16 +89,18 @@ class Game {
     }
 
     start() {
+        if (!this.mainInterval) {
 
-        this.mainInterval = setInterval(() => {
-            this.moveAll();
-            this.tick++;
-        }, this.gameConfig.timeBase);
-
+            this.mainInterval = setInterval(() => {
+                this.moveAll();
+                this.tick++;
+            }, this.gameConfig.timeBase);
+        }
     }
 
     stop() {
         clearInterval(this.mainInterval);
+        this.mainInterval = false;
     }
 }
 
