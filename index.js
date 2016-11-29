@@ -1,7 +1,7 @@
 const Game = require('./src/Game');
 
 const htmlNode = document.getElementById('game-board');
-const game = new Game(htmlNode,{drawEngine:{type:'canvas'}});
+const game = new Game(htmlNode, {drawEngine: {type: 'canvas'}});
 
 const players = [
     {
@@ -54,7 +54,7 @@ const onKeyDown = function (e) {
             game.getPlayers()[1].rotateLeft = true;
             break;
         case keyX:
-            game.getPlayers()[1].rotateRight= true;
+            game.getPlayers()[1].rotateRight = true;
             break;
         case esc:
             game.reset();
@@ -75,7 +75,7 @@ const onKeyUp = function (e) {
             game.getPlayers()[1].rotateLeft = false;
             break;
         case keyX:
-            game.getPlayers()[1].rotateRight= false;
+            game.getPlayers()[1].rotateRight = false;
             break;
         default:
 

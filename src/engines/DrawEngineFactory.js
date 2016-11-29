@@ -19,7 +19,8 @@ const chooseEngine = function (engineType, CustomEngine) {
 const checkCustomEngine = function (CustomEngine) {
     if (CustomEngine) {
         const functions = ['init', 'drawPoint', 'clear'];
-        functions.forEach(function (fncName) {
+        functions.forEach(
+            function (fncName) {
                 if (typeof CustomEngine.prototype[fncName] !== 'function') {
                     throw 'Incorrect custom draw engine';
                 }
@@ -37,10 +38,10 @@ class DrawEngineFactory {
     }
 
     drawPoint(snakeConfig, color) {
-        const point={
-            x:snakeConfig.headPoint.x,
-            y:snakeConfig.headPoint.y,
-            r:snakeConfig.circleR,
+        const point = {
+            x: snakeConfig.headPoint.x,
+            y: snakeConfig.headPoint.y,
+            r: snakeConfig.circleR,
             color: color || snakeConfig.color
         };
 

@@ -25,8 +25,6 @@ class Game {
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
         this.drawEngine = new DrawEngineFactory(this.gameConfig.drawEngine.type, domNode, this.gameConfig, this.gameConfig.drawEngine.CustomDrawEngine);
-
-        this.moveAll();
     }
 
     addPlayer(playerConfig) {
@@ -38,7 +36,9 @@ class Game {
     }
 
     onCollision(playerConfig) {
+        /* eslint-disable no-console */
         console.log(`Snake ${playerConfig.name} loose game`);
+        /* eslint-enable no-alert, no-console */
     }
 
     getPlayers() {
@@ -46,7 +46,8 @@ class Game {
     }
 
     reset() {
-        this.players.forEach(player => {
+        this.players.forEach(
+            player => {
                 player.collisionOccurred = false;
                 player.occupiedPoints.length = 0;
             }
