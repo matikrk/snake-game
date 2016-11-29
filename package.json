@@ -19,9 +19,9 @@
     "babel-jest": "^4.0.0",
     "babel-loader": "^4.0.0",
     "babelify": "^5.0.3",
+    "eslint": "^3.11.1",
+    "eslint-loader": "^1.6.1",
     "jest-cli": "^17.0.3",
-    "jshint": "^2.6.3",
-    "jshint-loader": "^0.8.3",
     "webpack": "^1.5.3"
   },
   "jest": {
