@@ -36,6 +36,7 @@ class Game {
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
         this.drawEngine = new DrawEngineFactory(this.gameConfig.drawEngine.type, this.domNode, this.gameConfig, this.gameConfig.drawEngine.CustomDrawEngine);
+        this.mainBoard= this.drawEngine.addLayer('mainBoard');
     }
 
     addPlayer(playerConfig) {
@@ -76,13 +77,13 @@ class Game {
             }
         );
 
-        this.drawEngine.clear();
+        this.mainBoard.clear();
         this.moveAll();
     }
 
     drawNextStep(point) {
         setTimeout(() => {
-            this.drawEngine.drawPoint(point);
+            this.mainBoard.drawPoint(point);
         }, 0);
     }
 

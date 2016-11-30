@@ -1,7 +1,10 @@
 const Game = require('./src/Game');
 
 const htmlNode = document.getElementById('game-board');
-const game = new Game(htmlNode,{drawEngine:{type:'svg'}});
+const game = new Game(htmlNode,{drawEngine:{type:'svg'},
+    board: {
+        x: 800, y: 500
+    },});
 
 const players = [
     {

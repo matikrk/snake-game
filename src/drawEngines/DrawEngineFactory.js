@@ -37,12 +37,16 @@ class DrawEngineFactory {
         this.engine.init(domNode, gameConfig);
     }
 
-    drawPoint(point) {
-        this.engine.drawPoint(point);
+    addLayer(name, zIndex = 1) {
+        return this.engine.addLayer(name, zIndex);
     }
 
-    clear() {
-        this.engine.clear();
+    deleteLayer(name) {
+        this.engine.deleteLayer(name);
+    }
+
+    getLayer(name) {
+        this.engine.getLayer(name);
     }
 }
 

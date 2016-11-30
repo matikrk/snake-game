@@ -6,7 +6,8 @@
 //     collisionColor: '#000000',
 //     headPoint: {x: 10, y: 10},
 // }
-import DrawEngineFactory from './drawEngines/DrawEngineFactory';
+
+
 const gapParameters = {
     gapMin: 12,
     gapMax: 32,
@@ -22,11 +23,7 @@ class Player {
         this.playerConfig.speedMultiplier = 1;
         this.collisionOccurred = false;
         this.occupiedPoints = [];
-        this.headPointDrawEngine = new DrawEngineFactory(
-            this.gameContext.gameConfig.drawEngine.type, this.gameContext.domNode, this.gameContext.gameConfig,
-            this.gameContext.gameConfig.drawEngine.CustomDrawEngine
-        );
-
+        this.headPointDrawEngine = this.gameContext.drawEngine.addLayer('player_' + this.playerConfig.name);
         this.nextMoves = [];
     }
 
