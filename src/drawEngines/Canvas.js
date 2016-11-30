@@ -1,7 +1,8 @@
 class Canvas {
     init(domNode, gameConfig) {
+        domNode.setAttribute('style',`width:${gameConfig.board.x}px; height: ${gameConfig.board.y}px;`);
         this.board = document.createElement('canvas');
-        this.board.setAttribute('style', 'border:1px solid');
+        this.board.setAttribute('style', 'border:1px solid; position:absolute;');
         this.board.setAttribute('width', gameConfig.board.x.toString());
         this.board.setAttribute('height', gameConfig.board.y.toString());
         domNode.appendChild(this.board);
