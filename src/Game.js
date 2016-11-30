@@ -18,7 +18,7 @@ const defaultConfig = {
     timeBase: 10,
 };
 
-var shuffleArray = function (array) {
+const shuffleArray = function (array) {
     const newMap = array.map(b => {
         return {x: b, r: ~~(Math.random() * 100)};
     });
