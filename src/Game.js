@@ -1,4 +1,4 @@
-import DrawEngineFactory from './engines/DrawEngineFactory';
+import DrawEngineFactory from './drawEngines/DrawEngineFactory';
 import MoveCalculator from './MoveCalculator';
 import Player from './Player';
 
