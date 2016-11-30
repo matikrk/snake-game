@@ -4,10 +4,10 @@ class MoveCalculator {
     }
 
     calculateNextStep(snakeConfig) {
-        const {headPoint:{x, y}, fi, sizeMultiplier} = snakeConfig;
+        const {headPoint:{x, y}, fi, sizeMultiplier, speedMultiplier} = snakeConfig;
         const {board:{x:boardX, y:boardY}, pointDensity, circleR} = this.gameConfig;
         const r = circleR * sizeMultiplier;
-        const step = r / pointDensity;
+        const step = speedMultiplier * r / pointDensity;
         let newX = (x + step * Math.cos(fi)) % boardX;
         newX = newX <= 0 ? boardX - newX : newX;
 
