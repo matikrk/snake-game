@@ -6,15 +6,28 @@
 //     collisionColor: '#000000',
 //     headPoint: {x: 10, y: 10},
 // }
+import DrawEngineFactory from './drawEngines/DrawEngineFactory';
 
 class Player {
     constructor(gameContext, playerConfig) {
         this.gameContext = gameContext;
         this.playerConfig = playerConfig;
-        this.playerConfig.sizeMultiplier=1;
-        this.playerConfig.speedMultiplier=1;
+        this.playerConfig.sizeMultiplier = 1;
+        this.playerConfig.speedMultiplier = 1;
         this.collisionOccurred = false;
         this.occupiedPoints = [];
+        this.headPointDrawEngine = new DrawEngineFactory(
+            this.gameContext.gameConfig.drawEngine.type, this.gameContext.domNode, this.gameContext.gameConfig,
+            this.gameContext.gameConfig.drawEngine.CustomDrawEngine
+        );
+    }
+
+    drawHead(point) {
+
+        setTimeout(() => {
+            this.headPointDrawEngine.clear();
+            this.headPointDrawEngine.drawPoint(point);
+        }, 0);
     }
 
     move() {
@@ -43,12 +56,13 @@ class Player {
 
                 this.collisionOccurred = true;
                 this.gameContext.onCollision(this.playerConfig);
-            }else {
+            } else {
                 point.color = this.playerConfig.color;
                 this.occupiedPoints.push(point);
             }
 
             this.gameContext.drawNextStep(point);
+            this.drawHead(point);
         }
     }
 }

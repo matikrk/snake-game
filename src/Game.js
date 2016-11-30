@@ -32,10 +32,10 @@ class Game {
         this.tick = 0;
 
         this.gameConfig = Object.assign({}, defaultConfig, config);
-        const domNode = definedDomNode;
+        this.domNode = definedDomNode;
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
-        this.drawEngine = new DrawEngineFactory(this.gameConfig.drawEngine.type, domNode, this.gameConfig, this.gameConfig.drawEngine.CustomDrawEngine);
+        this.drawEngine = new DrawEngineFactory(this.gameConfig.drawEngine.type, this.domNode, this.gameConfig, this.gameConfig.drawEngine.CustomDrawEngine);
     }
 
     addPlayer(playerConfig) {
