@@ -7,6 +7,12 @@
 //     headPoint: {x: 10, y: 10},
 // }
 import DrawEngineFactory from './drawEngines/DrawEngineFactory';
+const gapParameters = {
+    gapMin: 12,
+    gapMax: 32,
+    fillMin: 12,
+    fillMax: 200,
+};
 
 class Player {
     constructor(gameContext, playerConfig) {
@@ -20,14 +26,24 @@ class Player {
             this.gameContext.gameConfig.drawEngine.type, this.gameContext.domNode, this.gameContext.gameConfig,
             this.gameContext.gameConfig.drawEngine.CustomDrawEngine
         );
+
+        this.nextMoves = [];
     }
 
     drawHead(point) {
-
         setTimeout(() => {
             this.headPointDrawEngine.clear();
             this.headPointDrawEngine.drawPoint(point);
         }, 0);
+    }
+
+    fillNextMoves() {
+        const {gapMin, gapMax, fillMax, fillMin}= gapParameters;
+        const fill = ~~(Math.random() * (fillMax - fillMin)) + fillMin;
+        const fillArray = new Array(fill).fill(true);
+        const gap = ~~(Math.random() * (gapMax - gapMin)) + gapMin;
+        const gapArray = new Array(gap).fill(false);
+        this.nextMoves.push(...fillArray, ...gapArray);
     }
 
     move() {
@@ -40,28 +56,35 @@ class Player {
             }
             this.playerConfig.headPoint = this.gameContext.moveCalculator.calculateNextStep(this.playerConfig);
 
-            const collision = this.gameContext.players.find(({playerConfig:{name}, occupiedPoints}) => {
-                return this.gameContext.moveCalculator.checkCollision(
-                    occupiedPoints, this.playerConfig, name === this.playerConfig.name);
-            });
+            const visibleStep = this.nextMoves.shift();
+            if (this.nextMoves.length === 0) {
+                this.fillNextMoves();
+            }
 
             const point = {
                 r: this.playerConfig.sizeMultiplier * this.gameContext.gameConfig.circleR,
                 x: this.playerConfig.headPoint.x,
-                y: this.playerConfig.headPoint.y
+                y: this.playerConfig.headPoint.y,
+                color: this.playerConfig.color,
             };
+            if (visibleStep) {
+                const collision = this.gameContext.players.find(({playerConfig:{name}, occupiedPoints}) => {
+                    return this.gameContext.moveCalculator.checkCollision(
+                        occupiedPoints, this.playerConfig, name === this.playerConfig.name);
+                });
 
-            if (collision) {
-                point.color = this.playerConfig.collisionColor;
 
-                this.collisionOccurred = true;
-                this.gameContext.onCollision(this.playerConfig);
-            } else {
-                point.color = this.playerConfig.color;
-                this.occupiedPoints.push(point);
+                if (collision) {
+                    point.color = this.playerConfig.collisionColor;
+                    this.collisionOccurred = true;
+
+                    this.gameContext.onCollision(this.playerConfig);
+                } else {
+                    this.occupiedPoints.push(point);
+                }
+
+                this.gameContext.drawNextStep(point);
             }
-
-            this.gameContext.drawNextStep(point);
             this.drawHead(point);
         }
     }
