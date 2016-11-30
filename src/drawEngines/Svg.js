@@ -1,11 +1,12 @@
 class Layer {
     constructor(name, boardConfig, zIndex) {
         this.name = name;
-        this.layer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        this.layer.setAttribute('style', 'border:1px solid; position:absolute;');
+        this.layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         this.setZIndex(zIndex);
         this.layer.setAttribute('width', boardConfig.x.toString());
         this.layer.setAttribute('height', boardConfig.y.toString());
+        this.layer.setAttribute('x', '0');
+        this.layer.setAttribute('y', '0');
     }
 
     setZIndex(zIndex) {
@@ -28,10 +29,16 @@ class Layer {
 
 class Svg {
     init(domNode, gameConfig) {
-        this.parentNode = domNode;
         domNode.setAttribute('style', `width:${gameConfig.board.x}px; height: ${gameConfig.board.y}px;`);
+
+        this.parentNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        this.parentNode.setAttribute('style', 'border:1px solid; position:absolute;');
+        this.parentNode.setAttribute('width', gameConfig.board.x.toString());
+        this.parentNode.setAttribute('height', gameConfig.board.y.toString());
+
         this.boardConfig = gameConfig.board;
         this.layers = [];
+        domNode.appendChild(this.parentNode);
     }
 
     addLayer(name, zIndex) {
