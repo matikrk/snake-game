@@ -40,7 +40,9 @@ class Game {
     }
 
     addPlayer(playerConfig) {
-        this.players.push(new Player(this, playerConfig));
+        const player =new Player(this, playerConfig);
+        this.players.push(player);
+        return player;
     }
 
     deletePlayer(playerName) {
@@ -61,6 +63,9 @@ class Game {
 
     getPlayers() {
         return this.players;
+    }
+    getPlayer(name) {
+        return this.players.find(player=>player.playerConfig.name===name);
     }
 
     reset() {
