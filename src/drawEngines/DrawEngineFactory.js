@@ -18,7 +18,7 @@ const chooseEngine = function (engineType, CustomEngine) {
 
 const checkCustomEngine = function (CustomEngine) {
     if (CustomEngine) {
-        const functions = ['init', 'drawPoint', 'clear'];
+        const functions = ['init', 'addLayer', 'deleteLayer', 'getLayer'];
         functions.forEach(
             function (fncName) {
                 if (typeof CustomEngine.prototype[fncName] !== 'function') {

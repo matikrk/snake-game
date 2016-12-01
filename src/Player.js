@@ -25,6 +25,7 @@ class Player {
         this.occupiedPoints = [];
         this.headPointDrawEngine = this.gameContext.drawEngine.addLayer('player_' + this.playerConfig.name);
         this.nextMoves = [];
+        new Array(20).fill(true).forEach(() => this.fillNextMoves());
     }
 
     drawHead(point) {
@@ -73,9 +74,7 @@ class Player {
 
                 if (collision) {
                     point.color = this.playerConfig.collisionColor;
-                    this.collisionOccurred = true;
-
-                    this.gameContext.onCollision(this.playerConfig);
+                    this.onCollision();
                 } else {
                     this.occupiedPoints.push(point);
                 }
@@ -84,6 +83,19 @@ class Player {
             }
             this.drawHead(point);
         }
+    }
+
+    prepareNextMovesForNextGame() {
+        setTimeout(
+            () => new Array(20).fill(true).forEach(() => this.fillNextMoves()),
+            0
+        );
+    }
+
+    onCollision() {
+        this.collisionOccurred = true;
+        this.gameContext.onCollision(this.playerConfig);
+        this.prepareNextMovesForNextGame();
     }
 }
 

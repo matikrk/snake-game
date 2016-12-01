@@ -29,10 +29,12 @@ class Layer {
 
 class Svg {
     init(domNode, gameConfig) {
-        domNode.setAttribute('style', `width:${gameConfig.board.x}px; height: ${gameConfig.board.y}px;`);
+        domNode.setAttribute('style',
+            `width:${gameConfig.board.x}px; height: ${gameConfig.board.y}px;border:1px solid;`
+        );
 
         this.parentNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        this.parentNode.setAttribute('style', 'border:1px solid; position:absolute;');
+        this.parentNode.setAttribute('style', 'position:absolute;');
         this.parentNode.setAttribute('width', gameConfig.board.x.toString());
         this.parentNode.setAttribute('height', gameConfig.board.y.toString());
 

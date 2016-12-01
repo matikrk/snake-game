@@ -2,7 +2,7 @@ class Layer {
     constructor(name, boardConfig, zIndex) {
         this.name = name;
         this.layer = document.createElement('canvas');
-        this.layer.setAttribute('style', 'border:1px solid; position:absolute;');
+        this.layer.setAttribute('style', 'position:absolute;');
         this.setZIndex(zIndex);
         this.layer.setAttribute('width', boardConfig.x.toString());
         this.layer.setAttribute('height', boardConfig.y.toString());
@@ -29,7 +29,9 @@ class Layer {
 class Canvas {
     init(domNode, gameConfig) {
         this.parentNode = domNode;
-        domNode.setAttribute('style', `width:${gameConfig.board.x}px; height: ${gameConfig.board.y}px;`);
+        domNode.setAttribute('style',
+            `width:${gameConfig.board.x}px; height: ${gameConfig.board.y}px;border:1px solid; `
+        );
         this.boardConfig = gameConfig.board;
         this.layers = [];
     }
