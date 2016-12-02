@@ -13,9 +13,9 @@ const defaultConfig = {
     },
     circleR: 2,
     rotationAngle: 0.07,
-    pointDensity: 2, // 3.9 max, coz with higher density rotating causes collision
+    pointDensity: 1.5, //change it to adjust speed // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
-    timeBase: 10,
+    timeBase: 100 / 6, // 100/6 - 60FPS lower value make no sense in browser
 };
 
 const shuffleArray = function (array) {
@@ -82,6 +82,7 @@ class Game {
             }
         );
 
+        this.mainBoard.clear();
         setTimeout(() => {
             this.mainBoard.clear();
             this.moveAll();
@@ -89,9 +90,9 @@ class Game {
     }
 
     drawNextStep(point) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             this.mainBoard.drawPoint(point);
-        }, 0);
+        });
     }
 
     moveAll() {

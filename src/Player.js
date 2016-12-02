@@ -29,10 +29,10 @@ class Player {
     }
 
     drawHead(point) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             this.headPointDrawEngine.clear();
             this.headPointDrawEngine.drawPoint(point);
-        }, 0);
+        });
     }
 
     fillNextMoves() {
