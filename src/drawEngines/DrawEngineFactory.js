@@ -35,6 +35,7 @@ class DrawEngineFactory {
     constructor(engineType, domNode, gameConfig, CustomEngine) {
         this.engine = chooseEngine(engineType, CustomEngine);
         this.engine.init(domNode, gameConfig);
+        this.type = engineType;
     }
 
     addLayer(name, zIndex = 1) {

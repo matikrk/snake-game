@@ -12,10 +12,10 @@ const defaultConfig = {
         CustomDrawEngine: null
     },
     circleR: 2,
-    rotationAngle: 0.07,
-    pointDensity: 1.5, //change it to adjust speed // 3.9 max, coz with higher density rotating causes collision
+    rotationAngle: 0.09,
+    pointDensity: 1.2, //change it to adjust speed // 3.9 max, coz with higher density rotating causes collision
     wallOn: false,
-    timeBase: 100 / 6, // 100/6 - 60FPS lower value make no sense in browser
+    timeBase: 1000 / 60, // 1000/60 - 60FPS lower value make no sense in browser
 };
 
 const shuffleArray = function (array) {
@@ -36,7 +36,9 @@ class Game {
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
         this.drawEngine = new DrawEngineFactory(this.gameConfig.drawEngine.type, this.domNode, this.gameConfig, this.gameConfig.drawEngine.CustomDrawEngine);
-        this.mainBoard = this.drawEngine.addLayer('mainBoard');
+        this.mainBoard = this.drawEngine.addLayer('mainBoard', 5);
+        //  this.powerupBoard = this.drawEngine.addLayer('mainBoard');
+        //  this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
     }
 
     addPlayer(playerConfig) {
