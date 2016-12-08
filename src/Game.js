@@ -41,7 +41,6 @@ class Game {
         // this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
 
         this.startBoard = this.drawEngine.addLayer('startBoard', 10);
-        this.countToStart();
     }
 
     addPlayer(playerConfig) {
@@ -63,7 +62,7 @@ class Game {
 
     }
 
-    countToStart() {
+    start() {
         const canvas = this.startBoard.getDomElement();
         const ctx = canvas.getContext('2d');
         const {x, y}=this.gameConfig.board;
@@ -93,7 +92,7 @@ class Game {
                 return this.promiseHelper(() => {
                     this.startBoard.clear();
                     ctx.fillText('GO', (x - 2 * size) / 2, (y - size) / 2);
-                    this.start();
+                    this.startNow();
                 }, 1000);
             }
         ).then(
@@ -171,7 +170,7 @@ class Game {
         shuffleArray(this.players).forEach(player => player.move());
     }
 
-    start() {
+    startNow() {
         if (!this.mainInterval) {
 
             this.mainInterval = setInterval(() => {
