@@ -1,16 +1,16 @@
 class Layer {
     constructor(name, boardConfig, zIndex) {
         this.name = name;
-        this.layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        this.domElement = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         this.setZIndex(zIndex);
-        this.layer.setAttribute('width', boardConfig.x.toString());
-        this.layer.setAttribute('height', boardConfig.y.toString());
-        this.layer.setAttribute('x', '0');
-        this.layer.setAttribute('y', '0');
+        this.domElement.setAttribute('width', boardConfig.x.toString());
+        this.domElement.setAttribute('height', boardConfig.y.toString());
+        this.domElement.setAttribute('x', '0');
+        this.domElement.setAttribute('y', '0');
     }
 
     setZIndex(zIndex) {
-        this.layer.style.zIndex = zIndex;
+        this.domElement.style.zIndex = zIndex;
     }
 
     drawPoint({x, y, r, color}) {
@@ -19,11 +19,11 @@ class Layer {
         circleElem.setAttribute('cy', y.toString());
         circleElem.setAttribute('r', r.toString());
         circleElem.setAttribute('style', `fill:${color}`);
-        this.layer.appendChild(circleElem);
+        this.domElement.appendChild(circleElem);
     }
 
     clear() {
-        [...this.layer.childNodes].forEach(point => point.parentNode.removeChild(point));
+        [...this.domElement.childNodes].forEach(point => point.parentNode.removeChild(point));
     }
 }
 
@@ -46,7 +46,7 @@ class Svg {
     addLayer(name, zIndex) {
         const layer = new Layer(name, this.boardConfig, zIndex);
         this.layers.push(layer);
-        this.parentNode.appendChild(layer.layer);
+        this.parentNode.appendChild(layer.domElement);
         return layer;
     }
 

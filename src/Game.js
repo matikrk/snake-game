@@ -1,4 +1,4 @@
-import DrawEngineFactory from './drawEngines/DrawEngineFactory';
+import DrawEngine from './drawEngines/DrawEngine';
 import MoveCalculator from './MoveCalculator';
 import Player from './Player';
 
@@ -8,7 +8,7 @@ const defaultConfig = {
         x: 400, y: 400
     },
     drawEngine: {
-        type: DrawEngineFactory.engineTypes.canvas,
+        type: DrawEngine.engineTypes.canvas,
         CustomDrawEngine: null
     },
     circleR: 2,
@@ -35,8 +35,8 @@ class Game {
         this.domNode = definedDomNode;
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
-        this.drawEngine = new DrawEngineFactory(this.gameConfig.drawEngine.type, this.domNode, this.gameConfig, this.gameConfig.drawEngine.CustomDrawEngine);
-        this.mainBoard = this.drawEngine.addLayer('mainBoard', 5);
+        this.drawEngine = new DrawEngine(this.domNode, this.gameConfig);
+        this.mainBoard = this.drawEngine.addLayer('mainBoard', 5, 'canvas');
         //  this.powerupBoard = this.drawEngine.addLayer('mainBoard');
         //  this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
     }
