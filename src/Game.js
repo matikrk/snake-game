@@ -41,25 +41,17 @@ class Game {
         // this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
 
         this.startBoard = this.drawEngine.addLayer('startBoard', 10);
+
     }
 
     addPlayer(playerConfig) {
         const player = new Player(this, playerConfig);
         this.players.push(player);
+
+
+        player.reset();
+
         return player;
-    }
-
-    promiseHelper(fnc, time) {
-
-        return new Promise(
-            resolve => {
-                setTimeout(() => {
-                    fnc();
-                    resolve();
-                }, time);
-            }
-        );
-
     }
 
     start() {
@@ -71,35 +63,31 @@ class Game {
         new Promise(
             resolve => {
                 ctx.fillText('3', (x - size) / 2, (y - size) / 2);
-                resolve();
+                setTimeout(resolve, 1000);
             }
         ).then(
             () => {
-                return this.promiseHelper(() => {
-                    this.startBoard.clear();
-                    ctx.fillText('2', (x - size) / 2, (y - size) / 2);
-                }, 1000);
+                this.startBoard.clear();
+                ctx.fillText('2', (x - size) / 2, (y - size) / 2);
+
+                return new Promise(res => setTimeout(res, 1000));
             }
         ).then(
             () => {
-                return this.promiseHelper(() => {
-                    this.startBoard.clear();
-                    ctx.fillText('1', (x - size) / 2, (y - size) / 2);
-                }, 1000);
+                this.startBoard.clear();
+                ctx.fillText('1', (x - size) / 2, (y - size) / 2);
+                return new Promise(res => setTimeout(res, 1000));
             }
         ).then(
             () => {
-                return this.promiseHelper(() => {
-                    this.startBoard.clear();
-                    ctx.fillText('GO', (x - 2 * size) / 2, (y - size) / 2);
-                    this.startNow();
-                }, 1000);
+                this.startBoard.clear();
+                ctx.fillText('GO', (x - 2 * size) / 2, (y - size) / 2);
+                this.startNow();
+                return new Promise(res => setTimeout(res, 300));
             }
         ).then(
             () => {
-                return this.promiseHelper(() => {
-                    this.startBoard.clear();
-                }, 500);
+                this.startBoard.clear();
             }
         );
 
@@ -141,16 +129,7 @@ class Game {
     reset() {
 
         this.tick = 0;
-        this.players.forEach(
-            player => {
-                player.collisionOccurred = false;
-                player.occupiedPoints.length = 0;
-
-                player.playerConfig.headPoint.x = this.gameConfig.board.x * Math.random();
-                player.playerConfig.headPoint.y = this.gameConfig.board.y * Math.random();
-                player.playerConfig.fi = 2 * Math.PI * Math.random();
-            }
-        );
+        this.players.forEach(player => player.reset());
 
         this.mainBoard.clear();
         setTimeout(() => {

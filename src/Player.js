@@ -23,9 +23,12 @@ class Player {
         this.playerConfig.speedMultiplier = 1;
         this.collisionOccurred = false;
         this.occupiedPoints = [];
+        this.playerConfig.headPoint = {};
         this.headPointDrawEngine = this.gameContext.drawEngine.addLayer('player_' + this.playerConfig.name);
         this.nextMoves = [];
         new Array(20).fill(true).forEach(() => this.fillNextMoves());
+
+        this.reset();
     }
 
     drawHead(point) {
@@ -96,6 +99,15 @@ class Player {
         this.collisionOccurred = true;
         this.gameContext.onCollision(this.playerConfig);
         this.prepareNextMovesForNextGame();
+    }
+
+    reset() {
+        this.collisionOccurred = false;
+        this.occupiedPoints.length = 0;
+
+        this.playerConfig.headPoint.x = this.gameContext.gameConfig.board.x * Math.random();
+        this.playerConfig.headPoint.y = this.gameContext.gameConfig.board.y * Math.random();
+        this.playerConfig.fi = 2 * Math.PI * Math.random();
     }
 }
 

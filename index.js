@@ -10,29 +10,22 @@ const game = new Game(htmlNode, {
 const players = [
     {
         name: 'red',
-        fi: 2 * Math.PI,
         color: '#ff0000',
         collisionColor: '#000000',
-        headPoint: {x: 10, y: 10},
     },
     {
         name: 'green',
-        fi: 2 * Math.PI,
         color: '#00ff00',
         collisionColor: '#000000',
-        headPoint: {x: 10, y: 20},
     },
     {
         name: 'blue',
-        fi: 2 * Math.PI,
         color: '#0000ff',
         collisionColor: '#000000',
-        headPoint: {x: 10, y: 100},
     },
 ];
 players.forEach(playerConfig => game.addPlayer(playerConfig));
 game.deletePlayer('red');
-
 window.gameControll = game;
 
 
