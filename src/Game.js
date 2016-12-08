@@ -35,16 +35,84 @@ class Game {
         this.domNode = definedDomNode;
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
-        this.drawEngine = new DrawEngine(this.domNode, this.gameConfig);
+        this.drawEngine = new DrawEngine(this.domNode, this.gameConfig.board);
         this.mainBoard = this.drawEngine.addLayer('mainBoard');
         // this.powerupBoard = this.drawEngine.addLayer('powerBoard', -1,'svg');
         // this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
+
+        this.startBoard = this.drawEngine.addLayer('startBoard', 10);
+        this.countToStart();
     }
 
     addPlayer(playerConfig) {
         const player = new Player(this, playerConfig);
         this.players.push(player);
         return player;
+    }
+
+    promiseHelper(fnc, time) {
+
+        return new Promise(
+            resolve => {
+                setTimeout(() => {
+                    fnc();
+                    resolve();
+                }, time);
+            }
+        );
+
+    }
+
+    countToStart() {
+        const canvas = this.startBoard.getDomElement();
+        const ctx = canvas.getContext('2d');
+        const {x, y}=this.gameConfig.board;
+        const size = 80;
+        ctx.font = `${size}px Georgia`;
+        new Promise(
+            resolve => {
+                ctx.fillText('3', (x - size) / 2, (y - size) / 2);
+                resolve();
+            }
+        ).then(
+            () => {
+                return this.promiseHelper(() => {
+                    this.startBoard.clear();
+                    ctx.fillText('2', (x - size) / 2, (y - size) / 2);
+                }, 1000);
+            }
+        ).then(
+            () => {
+                return this.promiseHelper(() => {
+                    this.startBoard.clear();
+                    ctx.fillText('1', (x - size) / 2, (y - size) / 2);
+                }, 1000);
+            }
+        ).then(
+            () => {
+                return this.promiseHelper(() => {
+                    this.startBoard.clear();
+                    ctx.fillText('GO', (x - 2 * size) / 2, (y - size) / 2);
+                    this.start();
+                }, 1000);
+            }
+        ).then(
+            () => {
+                return this.promiseHelper(() => {
+                    this.startBoard.clear();
+                }, 500);
+            }
+        );
+
+
+        // this.startBoard.clear();
+        // ctx.fillText('1', (x - size) / 2, (y - size) / 2);
+        //
+        // this.startBoard.clear();
+        // ctx.fillText('GO', (x - size) / 2, (y - size) / 2);
+        // this.start();
+        //
+        // this.startBoard.clear();
     }
 
     deletePlayer(playerName) {

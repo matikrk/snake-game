@@ -4,7 +4,7 @@ import drawEngineTypes from './drawEngineTypes';
 import Layer from './Layer';
 
 class DrawEngine {
-    constructor(domNode, {board}) {
+    constructor(domNode, board) {
         this.parentNode = domNode;
         domNode.setAttribute('style',
             `width:${board.x}px; height: ${board.y}px;border:1px solid; `
