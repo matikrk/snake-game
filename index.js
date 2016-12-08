@@ -45,17 +45,17 @@ const onKeyDown = function (e) {
     switch (e.keyCode) {
         case keyLeft:
             e.preventDefault();
-            game.getPlayers()[0].rotateLeft = true;
+            game.getPlayer('green').rotateLeft = true;
             break;
         case keyRight:
             e.preventDefault();
-            game.getPlayers()[0].rotateRight = true;
+            game.getPlayer('green').rotateRight = true;
             break;
         case keyZ:
-            game.getPlayers()[1].rotateLeft = true;
+            game.getPlayer('blue').rotateLeft = true;
             break;
         case keyX:
-            game.getPlayers()[1].rotateRight = true;
+            game.getPlayer('blue').rotateRight = true;
             break;
         case esc:
             game.reset();
@@ -67,16 +67,16 @@ const onKeyDown = function (e) {
 const onKeyUp = function (e) {
     switch (e.keyCode) {
         case keyLeft:
-            game.getPlayers()[0].rotateLeft = false;
+            game.getPlayer('green').rotateLeft = false;
             break;
         case keyRight:
-            game.getPlayers()[0].rotateRight = false;
+            game.getPlayer('green').rotateRight = false;
             break;
         case keyZ:
-            game.getPlayers()[1].rotateLeft = false;
+            game.getPlayer('blue').rotateLeft = false;
             break;
         case keyX:
-            game.getPlayers()[1].rotateRight = false;
+            game.getPlayer('blue').rotateRight = false;
             break;
         default:
 
