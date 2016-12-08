@@ -36,13 +36,13 @@ class Game {
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
         this.drawEngine = new DrawEngine(this.domNode, this.gameConfig);
-        this.mainBoard = this.drawEngine.addLayer('mainBoard', 5, 'canvas');
-        //  this.powerupBoard = this.drawEngine.addLayer('mainBoard');
-        //  this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
+        this.mainBoard = this.drawEngine.addLayer('mainBoard');
+        // this.powerupBoard = this.drawEngine.addLayer('powerBoard', -1,'svg');
+        // this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
     }
 
     addPlayer(playerConfig) {
-        const player =new Player(this, playerConfig);
+        const player = new Player(this, playerConfig);
         this.players.push(player);
         return player;
     }
@@ -66,8 +66,9 @@ class Game {
     getPlayers() {
         return this.players;
     }
+
     getPlayer(name) {
-        return this.players.find(player=>player.playerConfig.name===name);
+        return this.players.find(player => player.playerConfig.name === name);
     }
 
     reset() {

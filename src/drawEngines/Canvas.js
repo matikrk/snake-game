@@ -1,4 +1,5 @@
 import drawEngineTypes from './drawEngineTypes';
+
 class Canvas {
     constructor(boardConfig) {
         this.domElement = document.createElement('canvas');

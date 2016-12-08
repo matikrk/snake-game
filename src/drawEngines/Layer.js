@@ -9,6 +9,7 @@ class Layer {
     setInitialStyles(zIndex) {
         this.getDomElement().setAttribute('style', 'position:absolute;');
         this.setZIndex(zIndex);
+        this.getDomElement().setAttribute('data-layerName', this.name);
     }
 
     setZIndex(zIndex) {
