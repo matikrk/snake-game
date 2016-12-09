@@ -28,7 +28,9 @@
     "webpack": "^1.5.3"
   },
   "jest": {
-    "transform": "babel-jest"
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    }
   },
   "dependencies": {}
 }
