@@ -1,4 +1,4 @@
-const Game = require('./src/Game');
+import Game from './src/Game';
 
 const htmlNode = document.getElementById('game-board');
 const game = new Game(htmlNode, {
