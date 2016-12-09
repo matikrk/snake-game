@@ -23,12 +23,16 @@ const shuffleArray = function (array) {
 };
 
 class Game {
-    constructor(definedDomNode, config) {
+    constructor(domNode, config) {
+        if(!domNode){
+            throw 'Can\'t create new Game without domNode';
+        }
+
         this.players = [];
         this.tick = 0;
 
         this.gameConfig = Object.assign({}, defaultConfig, config);
-        this.domNode = definedDomNode;
+        this.domNode = domNode;
 
         this.moveCalculator = new MoveCalculator(this.gameConfig);
         this.drawEngine = new DrawEngine(this.domNode, this.gameConfig.board);
