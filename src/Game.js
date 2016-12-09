@@ -90,16 +90,6 @@ class Game {
                 this.startBoard.clear();
             }
         );
-
-
-        // this.startBoard.clear();
-        // ctx.fillText('1', (x - size) / 2, (y - size) / 2);
-        //
-        // this.startBoard.clear();
-        // ctx.fillText('GO', (x - size) / 2, (y - size) / 2);
-        // this.start();
-        //
-        // this.startBoard.clear();
     }
 
     deletePlayer(playerName) {
