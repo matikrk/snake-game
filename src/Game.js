@@ -7,15 +7,11 @@ const defaultConfig = {
     board: {
         x: 400, y: 400
     },
-    drawEngine: {
-        type: DrawEngine.engineTypes.canvas,
-        CustomDrawEngine: null
-    },
     circleR: 2,
     rotationAngle: 0.09,
     pointDensity: 1.2, //change it to adjust speed // 3.9 max, coz with higher density rotating causes collision
-    wallOn: false,
     timeBase: 1000 / 60, // 1000/60 - 60FPS lower value make no sense in browser
+    wallOn: false,
 };
 
 const shuffleArray = function (array) {
@@ -37,25 +33,23 @@ class Game {
         this.moveCalculator = new MoveCalculator(this.gameConfig);
         this.drawEngine = new DrawEngine(this.domNode, this.gameConfig.board);
         this.mainBoard = this.drawEngine.addLayer('mainBoard');
+
+        //Creating new layer for powerups feature
         // this.powerupBoard = this.drawEngine.addLayer('powerBoard', -1,'svg');
         // this.powerupBoard.drawPoint({x:100,y:200,r:20,color:'#ff0000'});
 
-        this.startBoard = this.drawEngine.addLayer('startBoard', 10);
-
+        this.startCounterLayer = this.drawEngine.addLayer('startCounterLayer', 10);
     }
 
     addPlayer(playerConfig) {
         const player = new Player(this, playerConfig);
         this.players.push(player);
 
-
-        player.reset();
-
         return player;
     }
 
     start() {
-        const canvas = this.startBoard.getDomElement();
+        const canvas = this.startCounterLayer.getDomElement();
         const ctx = canvas.getContext('2d');
         const {x, y}=this.gameConfig.board;
         const size = 80;
@@ -67,27 +61,27 @@ class Game {
             }
         ).then(
             () => {
-                this.startBoard.clear();
+                this.startCounterLayer.clear();
                 ctx.fillText('2', (x - size) / 2, (y - size) / 2);
 
                 return new Promise(res => setTimeout(res, 1000));
             }
         ).then(
             () => {
-                this.startBoard.clear();
+                this.startCounterLayer.clear();
                 ctx.fillText('1', (x - size) / 2, (y - size) / 2);
                 return new Promise(res => setTimeout(res, 1000));
             }
         ).then(
             () => {
-                this.startBoard.clear();
+                this.startCounterLayer.clear();
                 ctx.fillText('GO', (x - 2 * size) / 2, (y - size) / 2);
                 this.startNow();
                 return new Promise(res => setTimeout(res, 300));
             }
         ).then(
             () => {
-                this.startBoard.clear();
+                this.startCounterLayer.clear();
             }
         );
     }
@@ -117,11 +111,9 @@ class Game {
     }
 
     reset() {
-
         this.tick = 0;
         this.players.forEach(player => player.reset());
 
-        this.mainBoard.clear();
         setTimeout(() => {
             this.mainBoard.clear();
             this.moveAll();
@@ -141,7 +133,6 @@ class Game {
 
     startNow() {
         if (!this.mainInterval) {
-
             this.mainInterval = setInterval(() => {
                 this.moveAll();
                 this.tick++;

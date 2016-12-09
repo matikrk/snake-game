@@ -33,11 +33,10 @@ class MoveCalculator {
         const {headPoint:{x, y}, sizeMultiplier} = playerConfig;
 
         const r = sizeMultiplier * circleR;
+        const approximationError = 0.01 * r;
 
         const stepsToOmit = ownSnake ? Math.ceil(2 * pointDensity * sizeMultiplier - 1) : 0;
         const omitFromIndex = occupiedPoints.length - stepsToOmit;
-
-        const approximationError = 0.01 * r;
 
         const hitWall = wallOn && (x < r || x > boardX - r || y < r || y > boardY - r);
 

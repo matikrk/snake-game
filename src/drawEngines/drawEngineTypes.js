@@ -1,6 +1,5 @@
-const drawEngineTypes = Object.freeze({
+module.exports = Object.freeze({
     svg: 'svg',
     canvas: 'canvas',
     custom: 'custom',
 });
-module.exports = drawEngineTypes;

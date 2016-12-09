@@ -7,7 +7,6 @@
 //     headPoint: {x: 10, y: 10},
 // }
 
-
 const gapParameters = {
     gapMin: 12,
     gapMax: 32,
@@ -26,9 +25,9 @@ class Player {
         this.playerConfig.headPoint = {};
         this.headPointDrawEngine = this.gameContext.drawEngine.addLayer('player_' + this.playerConfig.name);
         this.nextMoves = [];
-        new Array(20).fill(true).forEach(() => this.fillNextMoves());
+        this.prepareNextMovesForNextGame();
 
-        this.reset();
+        this.reset();// put player on random point at board
     }
 
     drawHead(point) {
@@ -68,12 +67,12 @@ class Player {
                 y: this.playerConfig.headPoint.y,
                 color: this.playerConfig.color,
             };
+
             if (visibleStep) {
                 const collision = this.gameContext.players.find(({playerConfig:{name}, occupiedPoints}) => {
                     return this.gameContext.moveCalculator.checkCollision(
                         occupiedPoints, this.playerConfig, name === this.playerConfig.name);
                 });
-
 
                 if (collision) {
                     point.color = this.playerConfig.collisionColor;
@@ -84,21 +83,20 @@ class Player {
 
                 this.gameContext.drawNextStep(point);
             }
+
             this.drawHead(point);
         }
     }
 
     prepareNextMovesForNextGame() {
-        setTimeout(
-            () => new Array(20).fill(true).forEach(() => this.fillNextMoves()),
-            0
-        );
+        const timesRepeat = 20;
+        new Array(timesRepeat).fill(true).forEach(() => this.fillNextMoves());
     }
 
     onCollision() {
         this.collisionOccurred = true;
         this.gameContext.onCollision(this.playerConfig);
-        this.prepareNextMovesForNextGame();
+        setTimeout(() => this.prepareNextMovesForNextGame(), 0);
     }
 
     reset() {
