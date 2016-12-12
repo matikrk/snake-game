@@ -28,6 +28,7 @@ test('Game object can\'t create without domNode', () => {
 
 
 test('Game object can\'t create without domNode', () => {
+    //example of bad definition
     let game;
     try {
         game = new Game();
@@ -37,6 +38,7 @@ test('Game object can\'t create without domNode', () => {
         expect(game).toBe(undefined);
     }
 
+    //example of good definition
     const domNode = document.createElement('div');
     const game2 = new Game(domNode);
     expect(game2 instanceof Game).toBe(true);

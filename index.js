@@ -26,8 +26,7 @@ const players = [
 ];
 players.forEach(playerConfig => game.addPlayer(playerConfig));
 game.deletePlayer('red');
-window.gameControll = game;
-
+window.gameControl = game;
 
 const keyLeft = 37;
 const keyRight = 39;
